@@ -1,0 +1,40 @@
+name: Mejora
+description: Una idea para el prototipo o para las reglas de coincidencia
+title: "[Mejora] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Qué problema resuelve
+      description: >-
+        Si la respuesta es "se vería mejor", cuenta quién se
+        beneficia y cómo se mide.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - Reglas de coincidencia y umbrales
+        - Alta y flujo del owner
+        - Vista del revisor
+        - Panel del owner
+        - Repositorio, CI y proceso
+    validations:
+      required: true
+
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Qué proponés
+
+  - type: textarea
+    id: tradeoff
+    attributes:
+      label: Qué se pierde con esto
+      description: >-
+        Toda decisión deja algo afuera. Si no se te ocurre nada,
+        probablemente no esté pensada todavía.
