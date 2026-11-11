@@ -314,204 +314,26 @@ button{font:inherit;color:inherit}
 
 <p id="live" class="sr-only" role="status" aria-live="polite"></p>
 
+<script src="js/data.js"></script>
+<script src="js/matching.js"></script>
+<script src="js/store.js"></script>
+<script src="js/revisor-cases.js"></script>
 <script>
 (function () {
   "use strict";
 
-  var CASES = [
-    {
-      id: "P-01",
-      ref: "PROP-101 ↔ A-4471",
-      short: "Oficina en Polanco, piso 4 ↔ piso 6",
-      title: "Oficina en Polanco, piso 4 ↔ registro entrante del piso 6",
-      verdict: "revisar",
-      score: 98,
-      compared: 8,
-      total: 8,
-      veto: "Mismo edificio, piso distinto (4 vs 6)",
-      vetoNote: "Un veto gana al puntaje: con 98 de score, el caso no se vincula solo.",
-      a: { role: "Registro A · propiedad", title: "PROP-101", sub: "Oficina en Polanco, piso 4 · Av. Horacio 1850", meta: "Validada por asesor · 4 mar 2025", verified: true },
-      b: { role: "Registro B · anuncio entrante", title: "A-4471", sub: "Oficina en Polanco, piso 6 · Av. Horacio 1850", meta: "Portal masivo + brochure · 12 mar 2025", verified: false },
-      rows: [
-        { field: "Dirección", a: "Av. Horacio 1850, Polanco", b: "Av. Horacio 1850, Polanco", state: "coincide" },
-        { field: "Superficie rentable", a: "420 m²", b: "400 m²", state: "difiere" },
-        { field: "Precio por m²", a: "$520", b: "$540", state: "difiere" },
-        { field: "Piso", a: "4", b: "6", state: "conflicto" },
-        { field: "Estacionamientos", a: "8", b: "12", state: "conflicto" },
-        { field: "Actor", a: "Inmobiliaria Polanco", b: "Misma administradora", state: "coincide" },
-        { field: "Fotos", a: "14 propias", b: "3 compartidas de edificio", state: "coincide" }
-      ],
-      signals: [
-        { name: "Ubicación", pts: 25, max: 25, note: "Mismo predio, colonia Polanco" },
-        { name: "Dirección", pts: 20, max: 20, note: "Av. Horacio 1850 idéntica" },
-        { name: "Superficie rentable", pts: 15, max: 15, note: "420 vs 400 m², 5% de diferencia" },
-        { name: "Precio por m²", pts: 10, max: 10, note: "$520 vs $540, 3.8% de diferencia" },
-        { name: "Tipo", pts: 10, max: 10, note: "Oficina en los dos registros" },
-        { name: "Fotos", pts: 10, max: 10, note: "3 fotos de edificio compartidas" },
-        { name: "Actor", pts: 5, max: 5, note: "Misma administradora en ambos" },
-        { name: "Atributos técnicos", pts: 3, max: 5, note: "Piso 4 vs 6 y estacionamientos 8 vs 12" }
-      ],
-      diff: [
-        { field: "Superficie rentable", a: "420 m²", b: "400 m²", prec: "Gana el owner verificado", cons: "Se conserva 420 m²; los 20 m² de diferencia quedan como observación fechada." },
-        { field: "Precio por m²", a: "$520", b: "$540", prec: "Gana el owner verificado", cons: "Se conserva $520/m²; el precio del portal se guarda como referencia." },
-        { field: "Piso", a: "4", b: "6", prec: "Gana el owner verificado", cons: "Si fusionas, se pierde: piso 6, solo en el registro B.", loss: true },
-        { field: "Estacionamientos", a: "8", b: "12", prec: "Gana el owner verificado", cons: "Si fusionas, se pierde: 12 cajones, solo en el registro B.", loss: true },
-        { field: "Frente", a: "Sin dato", b: "8 m", prec: "Sin conflicto: solo un registro lo tiene", cons: "Si fusionas, se agrega frente 8 m al expediente.", add: true }
-      ],
-      history: [
-        { time: "11:38", who: "Motor BEIQA", what: "Registro A-4471 ingresó a la cola con veto de piso." },
-        { time: "10:12", who: "Sofía R.", what: "PROP-101 validada", note: "Titularidad confirmada con el owner." },
-        { time: "09:47", who: "Motor BEIQA", what: "Veto registrado: mismo edificio, piso distinto (4 vs 6)." }
-      ]
-    },
-    {
-      id: "P-02",
-      ref: "PROP-102 ↔ A-4488",
-      short: "Nave industrial Toluca ↔ Lote 7",
-      title: "Nave industrial en Toluca ↔ registro entrante del Lote 7",
-      verdict: "vincular",
-      score: 96,
-      compared: 8,
-      total: 8,
-      veto: null,
-      vetoNote: null,
-      a: { role: "Registro A · propiedad", title: "PROP-102", sub: "Nave industrial en Toluca · Parque Industrial Toluca, Lote 7", meta: "Validada por asesor · 28 feb 2025", verified: true },
-      b: { role: "Registro B · anuncio entrante", title: "A-4488", sub: "Nave industrial en Toluca · Parque Industrial Toluca, Lote 7", meta: "Broker con mandato · 13 mar 2025", verified: false },
-      rows: [
-        { field: "Dirección", a: "Parque Industrial Toluca, Lote 7", b: "Parque Industrial Toluca, Lote 7", state: "coincide" },
-        { field: "Superficie rentable", a: "2,500 m²", b: "2,480 m²", state: "difiere" },
-        { field: "Precio por m²", a: "$145", b: "$147", state: "difiere" },
-        { field: "Tipo", a: "Nave industrial", b: "Nave industrial", state: "coincide" },
-        { field: "Actor", a: "Grupo Industrial MX", b: "Misma administradora", state: "coincide" },
-        { field: "Fotos", a: "9 propias", b: "4 del mismo patio", state: "coincide" },
-        { field: "Atributos técnicos", a: "Altura 9 m, carga 5 t/m²", b: "Sin datos técnicos", state: "conflicto" }
-      ],
-      signals: [
-        { name: "Ubicación", pts: 25, max: 25, note: "Mismo predio, Lote 7" },
-        { name: "Dirección", pts: 20, max: 20, note: "Dirección idéntica en ambos registros" },
-        { name: "Superficie rentable", pts: 15, max: 15, note: "2,500 vs 2,480 m², 0.8% de diferencia" },
-        { name: "Precio por m²", pts: 10, max: 10, note: "$145 vs $147, 1.4% de diferencia" },
-        { name: "Tipo", pts: 10, max: 10, note: "Nave industrial en ambos" },
-        { name: "Fotos", pts: 10, max: 10, note: "4 fotos del mismo patio" },
-        { name: "Actor", pts: 5, max: 5, note: "Grupo Industrial MX en los dos" },
-        { name: "Atributos técnicos", pts: 1, max: 5, note: "El registro B no publica altura ni carga de piso" }
-      ],
-      diff: [
-        { field: "Superficie rentable", a: "2,500 m²", b: "2,480 m²", prec: "Gana el owner verificado", cons: "Vincular no fusiona: 2,480 m² queda como observación fechada del anuncio." },
-        { field: "Precio por m²", a: "$145", b: "$147", prec: "Gana el owner verificado", cons: "El precio del anuncio queda como referencia, con fecha." },
-        { field: "Atributos técnicos", a: "Altura 9 m · carga 5 t/m²", b: "Sin dato", prec: "Sin conflicto: el registro B no aporta", cons: "No se pierde nada al vincular; el expediente conserva los datos del owner." }
-      ],
-      history: [
-        { time: "11:40", who: "Motor BEIQA", what: "Registro A-4488 entró con 96 de score y sin vetos." },
-        { time: "08:30", who: "Motor BEIQA", what: "Fotos del patio comparadas con PROP-102: coincidencia." }
-      ]
-    },
-    {
-      id: "P-03",
-      ref: "PROP-102 ↔ ANUN-201",
-      short: "Nave en Toluca, dirección distinta",
-      title: "Nave industrial en Toluca ↔ anuncio en Av. Industria 123",
-      verdict: "revisar",
-      score: 75,
-      compared: 8,
-      total: 8,
-      veto: null,
-      vetoNote: null,
-      a: { role: "Registro A · propiedad", title: "PROP-102", sub: "Parque Industrial Toluca, Lote 7", meta: "Validada por asesor · 28 feb 2025", verified: true },
-      b: { role: "Registro B · anuncio entrante", title: "ANUN-201", sub: "Nave en Av. Industria 123, Toluca", meta: "Portal masivo · 11 mar 2025", verified: false },
-      rows: [
-        { field: "Dirección", a: "Parque Industrial Toluca, Lote 7", b: "Av. Industria 123, Toluca", state: "conflicto" },
-        { field: "Superficie rentable", a: "2,500 m²", b: "2,300 m²", state: "difiere" },
-        { field: "Precio por m²", a: "$145", b: "$150", state: "difiere" },
-        { field: "Tipo", a: "Nave industrial", b: "Nave industrial", state: "coincide" },
-        { field: "Actor", a: "Grupo Industrial MX", b: "Portal masivo", state: "difiere" },
-        { field: "Fotos", a: "9 propias", b: "Sin fotos comparables", state: "difiere" },
-        { field: "Atributos técnicos", a: "Altura 9 m, carga 5 t/m²", b: "Sin datos técnicos", state: "conflicto" }
-      ],
-      signals: [
-        { name: "Ubicación", pts: 25, max: 25, note: "Mismo predio, Parque Industrial Toluca" },
-        { name: "Dirección", pts: 8, max: 20, note: "Parque Industrial Toluca, Lote 7 vs Av. Industria 123" },
-        { name: "Superficie rentable", pts: 12, max: 15, note: "2,500 vs 2,300 m², 8% de diferencia" },
-        { name: "Precio por m²", pts: 9, max: 10, note: "$145 vs $150, 3.4% de diferencia" },
-        { name: "Tipo", pts: 10, max: 10, note: "Nave industrial en ambos" },
-        { name: "Fotos", pts: 4, max: 10, note: "No hay fotos en común" },
-        { name: "Actor", pts: 3, max: 5, note: "Grupo Industrial MX vs portal masivo" },
-        { name: "Atributos técnicos", pts: 4, max: 5, note: "El anuncio no publica altura ni carga de piso" }
-      ],
-      diff: [
-        { field: "Dirección", a: "Parque Industrial Toluca, Lote 7", b: "Av. Industria 123, Toluca", prec: "Requiere revisión humana", precOpen: true, cons: "El predio coincide, la dirección no. Si fusionas, se pierde: dirección del portal." },
-        { field: "Superficie rentable", a: "2,500 m²", b: "2,300 m²", prec: "Gana el owner verificado", cons: "Se conserva 2,500 m²; los 200 m² del anuncio quedan como observación." },
-        { field: "Precio por m²", a: "$145", b: "$150", prec: "Gana el owner verificado", cons: "Se conserva $145/m²; el precio del portal se guarda con fecha." }
-      ],
-      history: [
-        { time: "11:22", who: "Motor BEIQA", what: "ANUN-201 ingresó con 75 de score; sin vetos, pero cobertura de dirección incompleta." }
-      ]
-    },
-    {
-      id: "P-04",
-      ref: "ANUN-204",
-      short: "Foto reutilizada en inmueble lejano",
-      title: "Anuncio en portal masivo con foto reutilizada",
-      verdict: "descartar",
-      score: 46,
-      compared: 6,
-      total: 8,
-      missing: ["fotos", "atributos técnicos"],
-      veto: null,
-      vetoNote: null,
-      a: { role: "Registro A · propiedad", title: "PROP-118", sub: "Bodega en Iztapalapa · Anillo Periférico 4100", meta: "Validada por asesor · 19 feb 2025", verified: true },
-      b: { role: "Registro B · anuncio entrante", title: "ANUN-204", sub: "Bodega en Cuautitlán · sin número publicado", meta: "Portal masivo · 12 mar 2025", verified: false },
-      coverageNote: "Cobertura parcial: 2 señales no se pudieron comparar.",
-      rows: [
-        { field: "Dirección", a: "Anillo Periférico 4100, Iztapalapa", b: "Sin número publicado, Cuautitlán", state: "conflicto" },
-        { field: "Superficie rentable", a: "1,800 m²", b: "1,650 m²", state: "difiere" },
-        { field: "Precio por m²", a: "$120", b: "$128", state: "difiere" },
-        { field: "Tipo", a: "Bodega", b: "Bodega", state: "coincide" },
-        { field: "Actor", a: "Grupo Industrial MX", b: "Portal masivo", state: "difiere" },
-        { field: "Fotos", a: "6 propias", b: "3 reutilizadas de otro inmueble", state: "conflicto" }
-      ],
-      signals: [
-        { name: "Ubicación", pts: 10, max: 25, note: "Zona distinta: Iztapalapa vs Cuautitlán" },
-        { name: "Dirección", pts: 6, max: 20, note: "El anuncio no publica número" },
-        { name: "Superficie rentable", pts: 9, max: 15, note: "1,800 vs 1,650 m², 8% de diferencia" },
-        { name: "Precio por m²", pts: 6, max: 10, note: "$120 vs $128, 6.6% de diferencia" },
-        { name: "Tipo", pts: 10, max: 10, note: "Bodega en ambos" },
-        { name: "Fotos", pts: null, max: 10, note: "3 fotos reutilizadas de un inmueble a 62 km" },
-        { name: "Actor", pts: 5, max: 5, note: "Grupo Industrial MX en los dos" },
-        { name: "Atributos técnicos", pts: null, max: 5, note: "El anuncio no publica ningún atributo técnico" }
-      ],
-      diff: [
-        { field: "Dirección", a: "Anillo Periférico 4100, Iztapalapa", b: "Sin número, Cuautitlán", prec: "Gana el owner verificado", cons: "No hay fusión: el anuncio se descarta y la foto reutilizada queda como evidencia." },
-        { field: "Fotos", a: "6 propias", b: "3 reutilizadas", prec: "Gana el owner verificado", cons: "Las fotos del anuncio no se incorporan al expediente." }
-      ],
-      history: [
-        { time: "11:05", who: "Motor BEIQA", what: "Comparación de fotos: 3 imágenes ya existen en PROP-118." },
-        { time: "11:04", who: "Motor BEIQA", what: "ANUN-204 ingresó con 46 de score y cobertura parcial." }
-      ]
-    },
-    {
-      id: "P-05",
-      ref: "Condesa · sin candidatos",
-      short: "Sin coincidencias en el catálogo",
-      title: "Inmueble nuevo en Condesa",
-      verdict: "sin",
-      score: null,
-      compared: 0,
-      total: 8,
-      empty: true,
-      a: { role: "Registro entrante", title: "A-4502", sub: "Local comercial en Condesa · Av. Ámsterdam 240", meta: "Owner directo · alta guiada · 15 mar 2025", verified: false },
-      history: [
-        { time: "11:44", who: "Motor BEIQA", what: "Búsqueda de candidatos: 0 registros arriba del umbral." },
-        { time: "11:44", who: "Motor BEIQA", what: "El alta pasó a validación del asesor." }
-      ]
-    }
-  ];
+  var beiqaStore = window.BeiqaStore ? window.BeiqaStore.createStore(window.sessionStorage) : null;
+  var beiqaSaved = beiqaStore ? beiqaStore.read() : { decisions: {}, history: [] };
+  var CASES = window.BeiqaRevisor.buildQueue({
+    decidedPairs: Object.keys(beiqaSaved.decisions || {}),
+    history: beiqaSaved.history || []
+  });
 
   var verdictLabel = { vincular: "Vincular automáticamente", revisar: "Revisar", descartar: "Descartar como duplicado", sin: "Sin coincidencias" };
   var verdictShort = { vincular: "Vincular", revisar: "Revisar", descartar: "Descartar", sin: "Sin coincidencias" };
   var verdictClass = { vincular: "seal--vincular", revisar: "seal--revisar", descartar: "seal--descartar", sin: "seal--sin" };
 
-  var state = { selected: "P-01", filter: "todos", decisions: {}, lastAction: null, confirmOpen: false, askOpen: false, reviewed: {} };
+  var state = { selected: (CASES.filter(function (c) { return c.veto; })[0] || CASES[0]).id, filter: "todos", decisions: {}, lastAction: null, confirmOpen: false, askOpen: false, reviewed: {} };
 
   var queueList = document.getElementById("queue-list");
   var detailBody = document.getElementById("detail-body");
