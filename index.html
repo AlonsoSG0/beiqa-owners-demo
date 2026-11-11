@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plataforma de Owners — BEIQA · Prototipo</title>
+<style>
+:root{
+  --paper:#F7F5F0; --paper-raised:#FBFAF7; --ink:#121A24; --ink-2:#33404F; --ink-3:#5C6876;
+  --rule:#DAD4C8; --rule-strong:#BDB5A5;
+  --v-link:#2F6B4F; --v-review:#8C5A0C; --v-discard:#4A5561;
+  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-doc:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);line-height:1.5}
+a{color:inherit}
+.bar{display:flex;align-items:baseline;gap:16px;padding:14px 28px;border-bottom:1px solid var(--rule)}
+.mark{font-family:var(--font-doc);font-weight:700;letter-spacing:.22em;font-size:15px}
+.bar .sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+main{max-width:1000px;margin:0 auto;padding:44px 28px 64px}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+h1{font-family:var(--font-doc);font-size:clamp(30px,5vw,46px);line-height:1.12;margin:0 0 16px;font-weight:600;letter-spacing:-.01em}
+.lead{font-size:17px;color:var(--ink-2);max-width:64ch;margin:0 0 8px}
+.thesis{border-left:3px solid var(--rule-strong);padding:2px 0 2px 16px;margin:26px 0 34px;font-family:var(--font-doc);font-size:19px;line-height:1.45}
+.thesis em{font-style:normal;border-bottom:2px solid var(--v-review)}
+.path{display:grid;gap:0;border-top:1px solid var(--rule)}
+.step{display:grid;grid-template-columns:52px 1fr auto;gap:18px;align-items:baseline;padding:20px 4px;border-bottom:1px solid var(--rule);text-decoration:none}
+.step:hover,.step:focus-visible{background:var(--paper-raised)}
+.step:focus-visible{outline:2px solid var(--v-review);outline-offset:2px}
+.num{font-size:12px;letter-spacing:.1em;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.step h2{font-size:17px;margin:0 0 4px;font-weight:650}
+.step p{margin:0;font-size:14px;color:var(--ink-3);max-width:62ch}
+.go{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:8px 22px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:#EFEBE2;padding:1px 5px;border-radius:2px}
+@media (max-width:520px){ .step{grid-template-columns:34px 1fr} .go{display:none} }
+</style>
+</head>
+<body>
+<div class="bar"><span class="mark">BEIQA</span><span class="sub">Plataforma de Owners · prototipo</span></div>
+<main>
+  <p class="eyebrow">Caso práctico · demo navegable</p>
+  <h1>El owner sube su inmueble.<br>El catálogo deja de adivinar.</h1>
+  <p class="lead">Hoy el 100% de la oferta llega raspada de portales, brokers y brochures. Esta plataforma mueve el origen de los datos a quien puede confirmarlos, y cruza lo que llega con lo que ya tenemos.</p>
+
+  <p class="thesis">Un <em>anuncio</em> no es una <em>propiedad</em>. El anuncio es una observación con fuente y fecha; la propiedad es la entidad canónica que se construye fusionando anuncios y lo que confirma el owner.</p>
+
+  <nav class="path" aria-label="Recorrido del prototipo">
+    <a class="step" href="01-alta-owner.html">
+      <span class="num">01</span>
+      <span><h2>Alta del inmueble</h2><p>Tres pasos, borrador guardado y un brochure que propone datos con su confianza. El owner corrige, no captura desde cero.</p></span>
+      <span class="go">Abrir</span>
+    </a>
+    <a class="step" href="02-posible-duplicado.html">
+      <span class="num">02</span>
+      <span><h2>Este inmueble podría ya existir</h2><p>No es un error, es una confirmación. El owner ve los candidatos con una razón en lenguaje humano y decide reclamarlo.</p></span>
+      <span class="go">Abrir</span>
+    </a>
+    <a class="step" href="03-revisor.html">
+      <span class="num">03</span>
+      <span><h2>Vista del revisor interno</h2><p>Cola por confianza, evidencia por señal, veto que gana al puntaje y diff con lo que se pierde si fusiona. Todo reversible.</p></span>
+      <span class="go">Abrir</span>
+    </a>
+    <a class="step" href="04-panel-owner.html">
+      <span class="num">04</span>
+      <span><h2>Lo que el owner gana</h2><p>Visitas, apariciones en shortlists y solicitudes pendientes, con rangos en lugar de conteos exactos para no exponer al cliente.</p></span>
+      <span class="go">Abrir</span>
+    </a>
+  </nav>
+
+  <div class="foot">
+    <span>Sin backend, sin build, sin dependencias: cada pantalla se abre sola.</span>
+    <span>Datos generados, ningún inmueble es real.</span>
+    <span>Pruebas: <code>npm test</code></span>
+  </div>
+</main>
+</body>
+</html>
