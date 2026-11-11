@@ -372,7 +372,7 @@ fieldset.group{border:0;padding:0;margin:0 0 var(--s-6)}
         <div class="form-row">
           <label class="field-label" for="m2">Superficie rentable <span class="req" aria-hidden="true">*</span></label>
           <div class="unit-input">
-            <input type="number" id="m2" name="m2" min="1" step="1" value="420" inputmode="numeric">
+            <input type="number" id="m2" name="m2" min="1" step="1" value="400" inputmode="numeric">
             <span class="unit">m²</span>
           </div>
           <p class="field-help">Solo el área que se renta, sin estacionamientos ni bodegas.</p>
@@ -382,11 +382,18 @@ fieldset.group{border:0;padding:0;margin:0 0 var(--s-6)}
         <div class="form-row">
           <label class="field-label" for="precio">Precio por m² <span class="req" aria-hidden="true">*</span></label>
           <div class="unit-input">
-            <input type="number" id="precio" name="precio" min="1" step="1" value="520" inputmode="numeric">
+            <input type="number" id="precio" name="precio" min="1" step="1" value="540" inputmode="numeric">
             <span class="unit">MXN / m² · mes</span>
           </div>
           <p class="field-help">Renta mensual dividida entre los m² rentables.</p>
           <p class="field-error" id="err-precio" hidden>Escribe el precio por m² al mes.</p>
+        </div>
+
+        <div class="form-row span-2">
+          <label class="field-label" for="piso">Piso</label>
+          <input type="number" id="piso" name="piso" min="0" step="1" value="6" inputmode="numeric"
+                 aria-describedby="help-piso" placeholder="Ej.: 6">
+          <p class="field-help" id="help-piso">Si el inmueble está dentro de un edificio, el piso es lo que lo distingue de las demás unidades de la misma dirección. En naves o locales a pie de calle, déjalo vacío.</p>
         </div>
       </div>
 
