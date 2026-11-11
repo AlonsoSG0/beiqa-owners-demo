@@ -37,7 +37,18 @@ index.html              Portada del prototipo: el recorrido completo en una pant
 04-panel-owner.html     Lo que el owner gana: interés, visitas, propuestas, disponibilidad
 js/matching.js          Lógica pura: normalización, blocking, señales, vetos, cobertura
 js/data.js              Catálogo y casos generados (ningún dato es real)
+js/revisor-cases.js     Traduce el motor a la vista del revisor y al aviso del owner
+js/duplicado-ui.js      Render del aviso de posible duplicado
 js/store.js             Estado compartido entre pantallas
-js/ui-*.js              Una interfaz por pantalla, sin reglas escondidas
-tests/                  Pruebas de las reglas y del conjunto etiquetado
+tests/matching.test.js  Pruebas de las reglas: decisión y motivo de cada caso
+tests/corpus.js         Conjunto etiquetado y barrido de umbrales
+AGENTS.md               Reglas para agentes que trabajan en este repo
+docs/PR-descripcion.md  Descripción del cambio como se escribiría en un equipo
 ```
+
+## Decisiones que sostienen el prototipo
+
+- **Un veto gana al puntaje.** Un conflicto duro impide vincular aunque el score sea 100.
+- **Un dato faltante no puntúa.** El score se normaliza sobre lo que se pudo comparar y la cobertura se muestra al lado.
+- **El sistema vincula, la persona fusiona.** Vincular un anuncio es reversible; fusionar entidades no.
+- **Cada pantalla se abre sola.** Sin backend, sin build y sin recursos externos.

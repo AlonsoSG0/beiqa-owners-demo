@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alta del owner · BEIQA Owners</title>
+<style>
+:root{
+  --paper:#F7F5F0;
+  --paper-raised:#FBFAF7;
+  --paper-sunken:#EFEBE2;
+  --ink:#121A24;
+  --ink-2:#33404F;
+  --ink-3:#5C6876;
+  --rule:#DAD4C8;
+  --rule-strong:#BDB5A5;
+
+  --v-link:#2F6B4F;
+  --v-link-bg:#E8EFE8;
+  --v-link-line:#B2C9B6;
+
+  --v-review:#8C5A0C;
+  --v-review-bg:#F5E9D2;
+  --v-review-line:#D8BE8C;
+
+  --v-discard:#4A5561;
+  --v-discard-bg:#E8E8E5;
+  --v-discard-line:#C2C5C2;
+
+  --veto:#A32020;
+  --veto-bg:#F8E6E3;
+  --veto-line:#DDB4AC;
+
+  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-doc:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px;
+  --s-7:32px; --s-8:40px; --s-9:56px; --s-10:72px;
+
+  --r-1:2px; --r-2:3px; --r-3:4px;
+  --dur-in:200ms; --dur-out:140ms; --ease:cubic-bezier(.23,1,.32,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-ui);
+  font-size:15px;
+  line-height:1.55;
+  font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0;line-height:1.2;font-weight:650;letter-spacing:-.01em}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:var(--r-1)}
+[hidden]{display:none !important}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:8px;z-index:60;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:var(--r-2);text-decoration:none;font-weight:600}
+.skip:focus{left:16px}
+
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- barra superior compartida ---------- */
+.topbar{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--rule)}
+.topbar-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:var(--s-6);padding:0 var(--s-6);height:60px}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand-mark{font-size:15px;font-weight:700;letter-spacing:.2em}
+.brand-sub{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-link{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid transparent;border-radius:var(--r-1);text-decoration:none;font-size:13px;font-weight:550;color:var(--ink-2);white-space:nowrap;transition:background var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.nav-link:hover{background:var(--paper-sunken);color:var(--ink)}
+.nav-link[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.nav-link[aria-current="page"]:hover{background:var(--ink);color:var(--paper)}
+.nav-n{font-size:10.5px;letter-spacing:.08em;opacity:.72}
+
+/* ---------- estructura de página ---------- */
+.page{max-width:1080px;margin:0 auto;padding:var(--s-8) var(--s-7) var(--s-10)}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-7);padding-bottom:var(--s-6);border-bottom:1px solid var(--rule-strong)}
+.eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.page-title{font-family:var(--font-doc);font-size:clamp(28px,3.4vw,38px);font-weight:600;letter-spacing:-.015em;margin-top:10px}
+.page-lede{margin-top:var(--s-3);max-width:62ch;color:var(--ink-2);font-size:16px;line-height:1.6}
+.folio{flex:none;text-align:right;font-size:12px;color:var(--ink-3);line-height:1.5}
+.folio strong{display:block;color:var(--ink);font-size:13px;letter-spacing:.04em}
+
+/* ---------- pasos ---------- */
+.stepper{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:var(--s-6) 0 var(--s-7);border-top:1px solid var(--rule)}
+.stepper-item{position:relative;padding:14px var(--s-4) 0 0;border-top:2px solid transparent;margin-top:-1px;display:flex;align-items:baseline;gap:10px;color:var(--ink-3)}
+.stepper-item.is-current{border-top-color:var(--ink);color:var(--ink)}
+.stepper-item.is-done{border-top-color:var(--rule-strong);color:var(--ink-2)}
+.stepper-n{font-size:11px;font-weight:700;letter-spacing:.08em;border:1px solid var(--rule-strong);border-radius:var(--r-1);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.stepper-item.is-current .stepper-n{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.stepper-t{font-size:13.5px;font-weight:550}
+
+/* ---------- hoja / expediente ---------- */
+.sheet{background:var(--paper-raised);border:1px solid var(--rule);border-radius:var(--r-3);padding:var(--s-6)}
+.sheet-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);padding-bottom:var(--s-3);border-bottom:1px solid var(--rule);margin-bottom:var(--s-5)}
+.sheet-title{font-size:16px;font-weight:650}
+.sheet-note{font-size:12.5px;color:var(--ink-3)}
+
+/* ---------- campos ---------- */
+.form-row{display:grid;gap:6px;margin-bottom:var(--s-5)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4) var(--s-5)}
+.form-grid .span-2{grid-column:1 / -1}
+label.field-label{font-size:13px;font-weight:600;color:var(--ink-2)}
+.req{color:var(--v-review);font-weight:700;margin-left:2px}
+input[type="text"],input[type="email"],input[type="tel"],input[type="number"],input[type="date"],select,textarea{
+  width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--paper);
+  border:1px solid var(--rule-strong);border-radius:var(--r-2);padding:10px var(--s-3);min-height:44px;
+  transition:border-color var(--dur-in) var(--ease),background var(--dur-in) var(--ease);
+}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 49%,var(--ink-3) 50%),linear-gradient(-45deg,transparent 49%,var(--ink-3) 50%);background-position:calc(100% - 16px) 52%,calc(100% - 11px) 52%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
+input:hover,select:hover,textarea:hover{border-color:var(--ink-3)}
+input:focus,select:focus,textarea:focus{border-color:var(--ink);background:var(--paper-raised);outline:none}
+.field-help{font-size:12.5px;color:var(--ink-3);line-height:1.45}
+.field-error{font-size:12.5px;color:var(--veto);font-weight:600;line-height:1.45}
+.has-error input,.has-error select{border-color:var(--veto);background:var(--veto-bg)}
+.unit-input{display:flex;align-items:stretch}
+.unit-input input{border-radius:var(--r-2) 0 0 var(--r-2)}
+.unit-input .unit{display:inline-flex;align-items:center;padding:0 12px;border:1px solid var(--rule-strong);border-left:none;border-radius:0 var(--r-2) var(--r-2) 0;background:var(--paper-sunken);font-size:13px;color:var(--ink-2);white-space:nowrap}
+
+fieldset.group{border:0;padding:0;margin:0 0 var(--s-6)}
+.group-legend{font-size:14.5px;font-weight:650;padding:0;margin-bottom:4px}
+.group-help{font-size:13px;color:var(--ink-3);max-width:64ch;margin-bottom:var(--s-3)}
+.choice-list{display:grid;gap:var(--s-2);margin-top:var(--s-2)}
+.choice{display:grid;grid-template-columns:20px minmax(0,1fr);gap:var(--s-3);align-items:start;padding:13px var(--s-4);border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper);cursor:pointer;transition:border-color var(--dur-in) var(--ease),background var(--dur-in) var(--ease)}
+.choice:hover{border-color:var(--ink-3)}
+.choice input{margin:3px 0 0;width:16px;height:16px;accent-color:var(--ink)}
+.choice:has(input:checked){border-color:var(--ink);background:var(--paper-raised);box-shadow:inset 0 0 0 1px var(--ink)}
+.choice-body{display:grid;gap:2px}
+.choice-title{font-size:14.5px;font-weight:600}
+.choice-note{font-size:12.5px;color:var(--ink-3)}
+
+/* ---------- acciones ---------- */
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3);margin-top:var(--s-6);padding-top:var(--s-5);border-top:1px solid var(--rule)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 var(--s-5);border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper-raised);color:var(--ink);font-size:14.5px;font-weight:600;text-decoration:none;cursor:pointer;transition:background var(--dur-in) var(--ease),border-color var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.btn:hover{background:var(--paper-sunken);border-color:var(--ink-3)}
+.btn--primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn--primary:hover{background:#1D2937;border-color:#1D2937;color:var(--paper)}
+.btn--quiet{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn--quiet:hover{background:var(--paper-sunken);color:var(--ink)}
+.btn--danger{color:var(--veto);border-color:var(--veto-line)}
+.btn--danger:hover{background:var(--veto-bg);border-color:var(--veto)}
+.btn[disabled],.btn[aria-disabled="true"]{opacity:.44;cursor:not-allowed}
+.btn[disabled]:hover{background:var(--paper-raised);border-color:var(--rule-strong)}
+.btn--link{min-height:0;padding:0;border:0;background:none;color:var(--ink);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+.actions-spacer{margin-left:auto}
+
+/* ---------- avisos ---------- */
+.alert{border:1px solid var(--veto-line);background:var(--veto-bg);border-radius:var(--r-2);padding:var(--s-3) var(--s-4);margin-bottom:var(--s-5)}
+.alert-title{font-size:13px;font-weight:700;color:var(--veto)}
+.alert ul{margin:6px 0 0;display:grid;gap:4px;font-size:13px}
+.alert a{color:var(--veto);font-weight:600}
+
+.notice{border:1px solid var(--rule-strong);border-left-width:2px;background:var(--paper-raised);border-radius:var(--r-2);padding:var(--s-4) var(--s-5);display:flex;gap:var(--s-4);align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.notice-body{display:grid;gap:4px;max-width:62ch}
+.notice-title{font-size:15px;font-weight:650}
+.notice-text{font-size:13.5px;color:var(--ink-2)}
+
+/* ---------- tarjeta de brochure ---------- */
+.brochure{margin-top:var(--s-4);border:1px solid var(--rule);border-radius:var(--r-3);background:var(--paper);overflow:hidden}
+.brochure-head{display:flex;align-items:center;gap:var(--s-3);padding:var(--s-3) var(--s-4);border-bottom:1px solid var(--rule);background:var(--paper-sunken)}
+.file-mark{width:26px;height:32px;border:1px solid var(--ink-3);border-radius:1px;display:grid;place-items:center;font-size:8.5px;font-weight:700;letter-spacing:.06em;color:var(--ink-2);background:var(--paper-raised);flex:none}
+.file-meta{display:grid;gap:1px;min-width:0}
+.file-name{font-size:13px;font-weight:600}
+.file-sub{font-size:11.5px;color:var(--ink-3)}
+.extract-list{display:grid}
+.extract{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s-3) var(--s-4);align-items:center;padding:var(--s-3) var(--s-4);border-bottom:1px solid var(--rule)}
+.extract:last-child{border-bottom:0}
+.extract-main{display:grid;gap:3px;min-width:0}
+.extract-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.extract-value{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.extract-value strong{font-size:16px;font-weight:650}
+.extract-input{max-width:120px;min-height:38px;padding:6px 10px;font-size:14.5px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:var(--r-1);font-size:11.5px;font-weight:650;letter-spacing:.01em;border:1px solid;white-space:nowrap}
+.chip--alta{color:var(--v-link);background:var(--v-link-bg);border-color:var(--v-link-line)}
+.chip--media{color:var(--v-review);background:var(--v-review-bg);border-color:var(--v-review-line)}
+.chip--baja{color:var(--v-discard);background:var(--v-discard-bg);border-color:var(--v-discard-line)}
+.chip--done{color:var(--ink-2);background:var(--paper-sunken);border-color:var(--rule-strong)}
+.extract-state{font-size:12px;color:var(--ink-3)}
+.brochure-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);padding:10px var(--s-4);border-top:1px solid var(--rule);background:var(--paper-raised);font-size:12.5px;color:var(--ink-2)}
+
+/* ---------- disponibilidad ---------- */
+.switch-row{display:flex;align-items:center;gap:var(--s-3);padding:var(--s-3) 0}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14.5px;font-weight:550}
+.switch input{position:absolute;opacity:0;width:44px;height:26px;margin:0;cursor:pointer}
+.switch-track{width:44px;height:26px;border-radius:13px;border:1px solid var(--rule-strong);background:var(--paper-sunken);position:relative;flex:none;transition:background var(--dur-in) var(--ease),border-color var(--dur-in) var(--ease)}
+.switch-track::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--paper-raised);border:1px solid var(--rule-strong);transition:transform var(--dur-in) var(--ease),background var(--dur-in) var(--ease)}
+.switch input:checked + .switch-track{background:var(--v-link);border-color:var(--v-link)}
+.switch input:checked + .switch-track::after{transform:translateX(18px);background:var(--paper-raised);border-color:var(--v-link)}
+.switch input:focus-visible + .switch-track{outline:2px solid var(--ink);outline-offset:2px}
+
+.dropzone{border:1px dashed var(--rule-strong);border-radius:var(--r-2);background:var(--paper);padding:var(--s-5);display:grid;gap:6px;justify-items:start}
+.dropzone:hover{border-color:var(--ink-3)}
+.dropzone input[type="file"]{font-size:13px;max-width:100%;color:var(--ink-2)}
+.photo-count{font-size:12.5px;color:var(--ink-2);font-weight:600}
+
+/* ---------- completitud ---------- */
+.complete{margin-top:var(--s-5);padding-top:var(--s-4);border-top:1px solid var(--rule)}
+.complete-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-3)}
+.complete-title{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.complete-value{font-size:14px;font-weight:650}
+.meter{height:6px;background:var(--paper-sunken);border-radius:3px;margin-top:8px;overflow:hidden;border:1px solid var(--rule)}
+.meter-fill{height:100%;background:var(--v-review);width:75%;transition:width var(--dur-in) var(--ease),background var(--dur-in) var(--ease)}
+.meter-fill.is-full{background:var(--v-link)}
+.complete-note{font-size:12.5px;color:var(--ink-3);margin-top:8px}
+.complete-note a{color:var(--ink);font-weight:600}
+
+/* ---------- estado final ---------- */
+.final{display:grid;gap:var(--s-4)}
+.final-mark{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--v-review)}
+.final-list{display:grid;gap:10px;margin-top:var(--s-2)}
+.final-list li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;font-size:14px;color:var(--ink-2)}
+.dot-n{font-size:11px;font-weight:700;color:var(--ink-3);border:1px solid var(--rule-strong);border-radius:50%;width:20px;height:20px;display:grid;place-items:center}
+
+.foot{margin-top:var(--s-7);padding-top:var(--s-4);border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);display:flex;gap:var(--s-4);flex-wrap:wrap}
+
+@media (max-width:860px){
+  .topbar-inner{flex-wrap:wrap;height:auto;padding:10px var(--s-4);gap:10px}
+  .nav{margin-left:0;width:100%;flex-wrap:wrap;overflow-x:visible}
+  .nav-link{white-space:normal}
+  .page{padding:var(--s-6) var(--s-4) var(--s-9)}
+  .page-head{flex-direction:column;gap:var(--s-3)}
+  .folio{text-align:left}
+  .stepper{grid-template-columns:1fr;gap:var(--s-2)}
+  .stepper-item{border-top:0;border-left:2px solid var(--rule);padding:4px 0 4px var(--s-3);margin-top:0}
+  .stepper-item.is-current{border-left-color:var(--ink)}
+  .form-grid{grid-template-columns:1fr}
+  .extract{grid-template-columns:1fr}
+  .sheet{padding:var(--s-4)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:1ms !important;animation-duration:1ms !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">BEIQA</span>
+      <span class="brand-sub">Owners · México</span>
+    </div>
+    <nav class="nav" aria-label="Flujo del prototipo">
+      <a class="nav-link" href="01-alta-owner.html" aria-current="page"><span class="nav-n">01</span> Alta del owner</a>
+      <a class="nav-link" href="02-posible-duplicado.html"><span class="nav-n">02</span> Posible duplicado</a>
+      <a class="nav-link" href="03-revisor.html"><span class="nav-n">03</span> Revisor</a>
+      <a class="nav-link" href="04-panel-owner.html"><span class="nav-n">04</span> Panel del owner</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido" class="page">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">Alta de inmueble</p>
+      <h1 class="page-title">Registra tu inmueble</h1>
+      <p class="page-lede">Tres pasos. En cada uno pedimos una sola cosa. Con lo que nos des armamos el expediente del inmueble; un asesor de BEIQA confirma la titularidad antes de publicarlo.</p>
+    </div>
+    <p class="folio"><strong>Exp. AL-2481</strong>Borrador<br><span class="num">15 mar 2025</span></p>
+  </div>
+
+  <ol class="stepper" aria-label="Pasos del alta">
+    <li class="stepper-item is-current" data-step-marker="1" aria-current="step">
+      <span class="stepper-n num">1</span><span class="stepper-t">Reclamo</span>
+    </li>
+    <li class="stepper-item" data-step-marker="2">
+      <span class="stepper-n num">2</span><span class="stepper-t">Datos del inmueble</span>
+    </li>
+    <li class="stepper-item" data-step-marker="3">
+      <span class="stepper-n num">3</span><span class="stepper-t">Fotos y disponibilidad</span>
+    </li>
+  </ol>
+
+  <p id="live" class="sr-only" role="status" aria-live="polite"></p>
+
+  <div class="alert" id="error-summary" hidden>
+    <p class="alert-title" id="error-title">Revisa 2 campos antes de continuar</p>
+    <ul id="error-list"></ul>
+  </div>
+
+  <form id="alta" novalidate>
+
+    <!-- PASO 1 -->
+    <section class="sheet step-panel" data-step="1" aria-labelledby="h-paso-1">
+      <div class="sheet-head">
+        <h2 class="sheet-title" id="h-paso-1">Tu relación con el inmueble</h2>
+        <span class="sheet-note">Paso 1 de 3</span>
+      </div>
+
+      <fieldset class="group">
+        <legend class="group-legend">¿En qué calidad representas al inmueble?</legend>
+        <p class="group-help">BEIQA representa exclusivamente a inquilinos corporativos. Aquí registramos el lado propietario, que es quien confirma los datos del inmueble.</p>
+        <div class="choice-list">
+          <label class="choice">
+            <input type="radio" name="relacion" value="propietario" checked>
+            <span class="choice-body">
+              <span class="choice-title">Propietario directo</span>
+              <span class="choice-note">Eres dueño del inmueble o de la parte que se renta.</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="relacion" value="administradora">
+            <span class="choice-body">
+              <span class="choice-title">Administradora o FIBRA</span>
+              <span class="choice-note">Administras el inmueble en nombre de los propietarios.</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="relacion" value="broker">
+            <span class="choice-body">
+              <span class="choice-title">Broker con mandato</span>
+              <span class="choice-note">Tienes un mandato firmado para comercializarlo.</span>
+            </span>
+          </label>
+        </div>
+        <p class="field-error" id="err-relacion" hidden>Elige cómo representas al inmueble.</p>
+      </fieldset>
+
+      <div class="form-row">
+        <label class="field-label" for="contacto">Un solo contacto <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="contacto" name="contacto" autocomplete="email" placeholder="Nombre y correo, o teléfono" aria-describedby="help-contacto" required>
+        <p class="field-help" id="help-contacto">Con este contacto te escribimos para confirmar el reclamo. No lo publicamos.</p>
+        <p class="field-error" id="err-contacto" hidden>Escribe un correo o teléfono al que podamos escribirte.</p>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn--primary" data-next="2">Continuar</button>
+        <button type="button" class="btn btn--quiet" id="save-draft">Guardar borrador</button>
+      </div>
+    </section>
+
+    <!-- PASO 2 -->
+    <section class="sheet step-panel" data-step="2" aria-labelledby="h-paso-2" hidden>
+      <div class="sheet-head">
+        <h2 class="sheet-title" id="h-paso-2">Datos del inmueble</h2>
+        <span class="sheet-note">Paso 2 de 3</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label class="field-label" for="tipo">Tipo de inmueble <span class="req" aria-hidden="true">*</span></label>
+          <select id="tipo" name="tipo" aria-describedby="err-tipo">
+            <option value="oficina" selected>Oficina</option>
+            <option value="nave">Nave industrial</option>
+            <option value="local">Local comercial</option>
+          </select>
+          <p class="field-error" id="err-tipo" hidden>Elige el tipo de inmueble.</p>
+        </div>
+
+        <div class="form-row">
+          <label class="field-label" for="colonia">Colonia o zona <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="colonia" name="colonia" value="Polanco" autocomplete="address-level3">
+          <p class="field-error" id="err-colonia" hidden>Escribe la colonia o zona del inmueble.</p>
+        </div>
+
+        <div class="form-row span-2">
+          <label class="field-label" for="direccion">Calle y número <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="direccion" name="direccion" value="Av. Horacio 1850" autocomplete="street-address">
+          <p class="field-error" id="err-direccion" hidden>Escribe la calle y el número.</p>
+        </div>
+
+        <div class="form-row">
+          <label class="field-label" for="m2">Superficie rentable <span class="req" aria-hidden="true">*</span></label>
+          <div class="unit-input">
+            <input type="number" id="m2" name="m2" min="1" step="1" value="420" inputmode="numeric">
+            <span class="unit">m²</span>
+          </div>
+          <p class="field-help">Solo el área que se renta, sin estacionamientos ni bodegas.</p>
+          <p class="field-error" id="err-m2" hidden>Escribe la superficie rentable en m².</p>
+        </div>
+
+        <div class="form-row">
+          <label class="field-label" for="precio">Precio por m² <span class="req" aria-hidden="true">*</span></label>
+          <div class="unit-input">
+            <input type="number" id="precio" name="precio" min="1" step="1" value="520" inputmode="numeric">
+            <span class="unit">MXN / m² · mes</span>
+          </div>
+          <p class="field-help">Renta mensual dividida entre los m² rentables.</p>
+          <p class="field-error" id="err-precio" hidden>Escribe el precio por m² al mes.</p>
+        </div>
+      </div>
+
+      <div class="brochure">
+        <div class="brochure-head">
+          <span class="file-mark" aria-hidden="true">PDF</span>
+          <span class="file-meta">
+            <span class="file-name">brochure-horacio-1850.pdf</span>
+            <span class="file-sub">Adjunto · 2.4 MB · 6 páginas</span>
+          </span>
+        </div>
+        <div class="extract-list" id="extract-list">
+          <div class="extract" data-extract="altura" data-state="propuesto">
+            <div class="extract-main">
+              <span class="extract-label">Altura libre</span>
+              <span class="extract-value">
+                <strong>9 m</strong>
+                <span class="chip chip--alta" data-chip>Confianza alta</span>
+              </span>
+              <span class="extract-state" data-state-text>Leído del brochure, sin cambios.</span>
+            </div>
+            <button type="button" class="btn btn--quiet" data-accept="altura">Aceptar</button>
+          </div>
+
+          <div class="extract" data-extract="carga" data-state="propuesto">
+            <div class="extract-main">
+              <span class="extract-label" id="lbl-carga">Carga de piso</span>
+              <span class="extract-value">
+                <input class="extract-input" type="text" inputmode="decimal" id="val-carga" value="5" aria-labelledby="lbl-carga" aria-describedby="state-carga">
+                <span class="num" style="font-size:13px;color:var(--ink-2)">t/m²</span>
+                <span class="chip chip--media" data-chip>Confianza media · revísala</span>
+              </span>
+              <span class="extract-state" id="state-carga" data-state-text>El brochure no lo dice con claridad.</span>
+            </div>
+            <button type="button" class="btn btn--quiet" data-accept="carga">Confirmar</button>
+          </div>
+
+          <div class="extract" data-extract="estacionamientos" data-state="propuesto">
+            <div class="extract-main">
+              <span class="extract-label" id="lbl-est">Estacionamientos</span>
+              <span class="extract-value">
+                <input class="extract-input" type="text" inputmode="numeric" id="val-est" value="12" aria-labelledby="lbl-est" aria-describedby="state-est">
+                <span class="chip chip--baja" data-chip>Confianza baja · confírmala</span>
+              </span>
+              <span class="extract-state" id="state-est" data-state-text>El número aparece una sola vez y sin unidad.</span>
+            </div>
+            <button type="button" class="btn btn--quiet" data-accept="estacionamientos">Confirmar</button>
+          </div>
+        </div>
+        <div class="brochure-foot">
+          <span id="extract-count">1 de 3 campos confirmados</span>
+          <span>Los campos que aceptes pasan al expediente con tu firma.</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn--primary" data-next="3">Continuar</button>
+        <button type="button" class="btn btn--quiet" data-back="1">Atrás</button>
+      </div>
+    </section>
+
+    <!-- PASO 3 -->
+    <section class="sheet step-panel" data-step="3" aria-labelledby="h-paso-3" hidden>
+      <div class="sheet-head">
+        <h2 class="sheet-title" id="h-paso-3">Fotos y disponibilidad</h2>
+        <span class="sheet-note">Paso 3 de 3</span>
+      </div>
+
+      <div class="form-row">
+        <span class="field-label" id="lbl-disp">¿El inmueble está disponible?</span>
+        <div class="switch-row">
+          <label class="switch">
+            <input type="checkbox" id="disponible" checked aria-describedby="help-disp">
+            <span class="switch-track" aria-hidden="true"></span>
+            <span id="disp-text">Disponible ahora</span>
+          </label>
+        </div>
+        <p class="field-help" id="help-disp">Si todavía no puedes entregarlo, indica desde cuándo sí. Con eso avisamos a los asesores.</p>
+      </div>
+
+      <div class="form-row" id="row-fecha" hidden>
+        <label class="field-label" for="fecha-entrada">Fecha de entrada</label>
+        <input type="date" id="fecha-entrada" name="fecha-entrada">
+        <p class="field-help">La fecha en que el inmueble queda libre para el inquilino.</p>
+      </div>
+
+      <div class="form-row">
+        <span class="field-label" id="lbl-fotos">Fotos del inmueble</span>
+        <div class="dropzone">
+          <label class="field-label" for="fotos" style="font-weight:600">Agregar fotos</label>
+          <input type="file" id="fotos" accept="image/*" multiple aria-describedby="help-fotos help-fotos-nota">
+          <p class="field-help" id="help-fotos">JPG o PNG, hasta 12 fotos. Las fotos de edificio compartidas nos ayudan a detectar duplicados.</p>
+          <p class="photo-count" id="photo-count">Sin fotos todavía.</p>
+        </div>
+        <p class="field-help" id="help-fotos-nota">Puedes publicar sin fotos; el expediente queda incompleto y el inmueble aparece con menos prioridad.</p>
+      </div>
+
+      <div class="complete">
+        <div class="complete-head">
+          <span class="complete-title">Completitud del expediente</span>
+          <span class="complete-value num" id="complete-value">75%</span>
+        </div>
+        <div class="meter" role="progressbar" aria-labelledby="lbl-complete" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" id="meter">
+          <div class="meter-fill" id="meter-fill"></div>
+        </div>
+        <p class="complete-note" id="complete-note">75% — te falta <a href="#fecha-entrada" id="complete-link">fecha de entrada</a>.</p>
+        <span class="sr-only" id="lbl-complete">Completitud del expediente</span>
+      </div>
+
+      <div class="notice" style="margin-top:var(--s-6)">
+        <div class="notice-body">
+          <span class="eyebrow">Posible duplicado</span>
+          <h3 class="notice-title">Este inmueble podría ya existir</h3>
+          <p class="notice-text">Encontramos 2 registros parecidos a Av. Horacio 1850, Polanco. Confirmarlo toma menos de un minuto y evita que tu inmueble se publique dos veces.</p>
+        </div>
+        <a class="btn" href="02-posible-duplicado.html">Revisar coincidencias</a>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn--primary" id="submit-alta">Enviar a verificación</button>
+        <button type="button" class="btn btn--quiet" data-back="2">Atrás</button>
+        <span class="actions-spacer sheet-note">Nada se publica sin la confirmación de un asesor.</span>
+      </div>
+    </section>
+  </form>
+
+  <!-- ESTADO FINAL -->
+  <section class="sheet" id="final" hidden aria-labelledby="h-final">
+    <div class="final">
+      <p class="final-mark">
+        <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.6V8l2.4 1.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Reclamo en verificación
+      </p>
+      <h2 class="page-title" id="h-final" style="font-size:26px">Tu reclamo está en verificación</h2>
+      <p class="page-lede" style="font-size:15px">Recibimos el expediente de <strong>Av. Horacio 1850, Polanco</strong> y quedó ligado a tu contacto. Un asesor de BEIQA confirma la titularidad y los datos; normalmente toma un día hábil.</p>
+      <ul class="final-list">
+        <li><span class="dot-n num">1</span><span>Confirmamos la titularidad con tu contacto. Si falta un documento, te lo pedimos por correo.</span></li>
+        <li><span class="dot-n num">2</span><span>Revisamos si el inmueble ya existe en el catálogo y te avisamos si hay que fusionar registros.</span></li>
+        <li><span class="dot-n num">3</span><span>Cuando queda validado, el inmueble entra a los shortlists de inquilinos corporativos.</span></li>
+      </ul>
+      <div class="actions">
+        <a class="btn btn--primary" href="04-panel-owner.html">Ver el panel del owner</a>
+        <a class="btn" href="02-posible-duplicado.html">Revisar las coincidencias</a>
+        <button type="button" class="btn btn--quiet" id="undo-submit">Volver al formulario</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">
+    <span>BEIQA · Consultoría de inquilinos corporativos</span>
+    <span>Prototipo de trabajo · datos de ejemplo</span>
+  </p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById("alta");
+  var panels = Array.prototype.slice.call(document.querySelectorAll(".step-panel"));
+  var markers = Array.prototype.slice.call(document.querySelectorAll("[data-step-marker]"));
+  var live = document.getElementById("live");
+  var finalPanel = document.getElementById("final");
+  var summary = document.getElementById("error-summary");
+  var summaryList = document.getElementById("error-list");
+  var summaryTitle = document.getElementById("error-title");
+
+  var current = 1;
+
+  function say(message) {
+    live.textContent = "";
+    window.setTimeout(function () { live.textContent = message; }, 30);
+  }
+
+  function showStep(step) {
+    current = step;
+    panels.forEach(function (panel) {
+      panel.hidden = Number(panel.getAttribute("data-step")) !== step;
+    });
+    markers.forEach(function (marker) {
+      var index = Number(marker.getAttribute("data-step-marker"));
+      marker.classList.toggle("is-current", index === step);
+      marker.classList.toggle("is-done", index < step);
+      if (index === step) {
+        marker.setAttribute("aria-current", "step");
+      } else {
+        marker.removeAttribute("aria-current");
+      }
+    });
+    var heading = document.querySelector('.step-panel[data-step="' + step + '"] .sheet-title');
+    if (heading) { heading.setAttribute("tabindex", "-1"); heading.focus({ preventScroll: true }); }
+    say("Paso " + step + " de 3.");
+    window.scrollTo({ top: 0, behavior: prefersReduced() ? "auto" : "smooth" });
+  }
+
+  function prefersReduced() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  /* ---------- validación ---------- */
+  var rules = {
+    contacto: function (value) {
+      return value.trim().length >= 5;
+    },
+    colonia: function (value) { return value.trim().length > 0; },
+    direccion: function (value) { return value.trim().length > 0; },
+    m2: function (value) { return Number(value) > 0; },
+    precio: function (value) { return Number(value) > 0; }
+  };
+
+  var messages = {
+    contacto: "Escribe un correo o teléfono al que podamos escribirte.",
+    colonia: "Escribe la colonia o zona del inmueble.",
+    direccion: "Escribe la calle y el número.",
+    m2: "Escribe la superficie rentable en m².",
+    precio: "Escribe el precio por m² al mes."
+  };
+
+  function fieldWrap(id) {
+    var input = document.getElementById(id);
+    return input ? input.closest(".form-row") : null;
+  }
+
+  function setError(id, hasError) {
+    var wrap = fieldWrap(id);
+    var message = document.getElementById("err-" + id);
+    if (wrap) { wrap.classList.toggle("has-error", hasError); }
+    if (message) { message.hidden = !hasError; }
+    var input = document.getElementById(id);
+    if (input) {
+      if (hasError) { input.setAttribute("aria-invalid", "true"); }
+      else { input.removeAttribute("aria-invalid"); }
+    }
+  }
+
+  function validateField(id) {
+    var input = document.getElementById(id);
+    if (!input || !rules[id]) { return true; }
+    var ok = rules[id](input.value);
+    setError(id, !ok);
+    return ok;
+  }
+
+  function stepFields(step) {
+    if (step === 2) { return ["colonia", "direccion", "m2", "precio"]; }
+    if (step === 1) { return ["contacto"]; }
+    return [];
+  }
+
+  function validateStep(step) {
+    var fields = stepFields(step);
+    var invalid = fields.filter(function (id) { return !validateField(id); });
+    if (invalid.length) {
+      summaryTitle.textContent = invalid.length === 1
+        ? "Revisa 1 campo antes de continuar"
+        : "Revisa " + invalid.length + " campos antes de continuar";
+      summaryList.textContent = "";
+      invalid.forEach(function (id) {
+        var item = document.createElement("li");
+        var link = document.createElement("a");
+        link.href = "#" + id;
+        link.textContent = messages[id];
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById(id).focus();
+        });
+        item.appendChild(link);
+        summaryList.appendChild(item);
+      });
+      summary.hidden = false;
+      var first = document.getElementById(invalid[0]);
+      if (first) { first.focus(); }
+      say("Hay campos por corregir en el paso " + step + ".");
+      return false;
+    }
+    summary.hidden = true;
+    return true;
+  }
+
+  ["contacto", "colonia", "direccion", "m2", "precio"].forEach(function (id) {
+    var input = document.getElementById(id);
+    if (!input) { return; }
+    input.addEventListener("blur", function () {
+      if (input.value.trim() === "") { return; }
+      validateField(id);
+    });
+    input.addEventListener("input", function () {
+      if (fieldWrap(id) && fieldWrap(id).classList.contains("has-error")) { validateField(id); }
+    });
+  });
+
+  document.querySelectorAll("[data-next]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var target = Number(button.getAttribute("data-next"));
+      if (target === current + 1 && !validateStep(current)) { return; }
+      if (target === current + 1) { summary.hidden = true; }
+      showStep(target);
+    });
+  });
+
+  document.querySelectorAll("[data-back]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      summary.hidden = true;
+      showStep(Number(button.getAttribute("data-back")));
+    });
+  });
+
+  /* ---------- brochure ---------- */
+  var extractCount = document.getElementById("extract-count");
+  var extracts = Array.prototype.slice.call(document.querySelectorAll("[data-extract]"));
+
+  function refreshExtractCount() {
+    var done = extracts.filter(function (row) { return row.getAttribute("data-state") === "confirmado"; }).length;
+    extractCount.textContent = done + " de " + extracts.length + " campos confirmados";
+  }
+
+  document.querySelectorAll("[data-accept]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var key = button.getAttribute("data-accept");
+      var row = document.querySelector('[data-extract="' + key + '"]');
+      if (!row || row.getAttribute("data-state") === "confirmado") { return; }
+      var chip = row.querySelector("[data-chip]");
+      var stateText = row.querySelector("[data-state-text]");
+      var label = row.querySelector(".extract-label").textContent;
+      var input = row.querySelector("input");
+      row.setAttribute("data-state", "confirmado");
+      if (chip) {
+        chip.className = "chip chip--done";
+        chip.textContent = "Confirmado por ti";
+      }
+      if (stateText) {
+        stateText.textContent = input
+          ? "Confirmaste el valor. Si te equivocaste, vuelve a editar el campo."
+          : "Tomado del brochure tal como viene y aceptado por ti.";
+      }
+      if (input) { input.readOnly = true; }
+      button.disabled = true;
+      button.textContent = "Confirmado";
+      refreshExtractCount();
+      say(label + " confirmado.");
+    });
+  });
+
+  /* ---------- disponibilidad, fotos, completitud ---------- */
+  var disponible = document.getElementById("disponible");
+  var dispText = document.getElementById("disp-text");
+  var rowFecha = document.getElementById("row-fecha");
+  var fecha = document.getElementById("fecha-entrada");
+  var completeValue = document.getElementById("complete-value");
+  var completeNote = document.getElementById("complete-note");
+  var meter = document.getElementById("meter");
+  var meterFill = document.getElementById("meter-fill");
+
+  function completeness() {
+    if (disponible.checked) { return 75; }
+    return fecha.value ? 100 : 75;
+  }
+
+  function renderCompleteness() {
+    var value = completeness();
+    completeValue.textContent = value + "%";
+    meter.setAttribute("aria-valuenow", String(value));
+    meterFill.style.width = value + "%";
+    meterFill.classList.toggle("is-full", value === 100);
+    if (value === 100) {
+      completeNote.textContent = "100% — expediente completo.";
+    } else {
+      completeNote.textContent = "";
+      completeNote.append("75% — te falta ");
+      var link = document.createElement("a");
+      link.href = "#fecha-entrada";
+      link.textContent = "fecha de entrada";
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        disponible.checked = false;
+        disponible.dispatchEvent(new Event("change"));
+        fecha.focus();
+      });
+      completeNote.append(link, ".");
+    }
+  }
+
+  disponible.addEventListener("change", function () {
+    var open = disponible.checked;
+    dispText.textContent = open ? "Disponible ahora" : "Disponible a partir de una fecha";
+    rowFecha.hidden = open;
+    if (open) { fecha.value = ""; }
+    renderCompleteness();
+    say(open ? "Inmueble disponible ahora." : "Indica la fecha de entrada.");
+  });
+
+  fecha.addEventListener("change", function () {
+    renderCompleteness();
+    if (fecha.value) { say("Fecha de entrada registrada. Expediente completo."); }
+  });
+
+  var fotos = document.getElementById("fotos");
+  var photoCount = document.getElementById("photo-count");
+  fotos.addEventListener("change", function () {
+    var total = fotos.files ? fotos.files.length : 0;
+    photoCount.textContent = total === 0
+      ? "Sin fotos todavía."
+      : total + (total === 1 ? " foto lista para subir." : " fotos listas para subir.");
+    say(total === 0 ? "Sin fotos seleccionadas." : total + " fotos seleccionadas.");
+  });
+
+  /* ---------- borrador ---------- */
+  document.getElementById("save-draft").addEventListener("click", function () {
+    say("Borrador guardado. Puedes cerrar esta página y volver después.");
+    var button = this;
+    button.textContent = "Borrador guardado";
+    button.disabled = true;
+  });
+
+  /* ---------- envío ---------- */
+  var submit = document.getElementById("submit-alta");
+  var submitLabel = submit.textContent;
+
+  submit.addEventListener("click", function () {
+    if (!validateStep(1)) {
+      showStep(1);
+      return;
+    }
+    if (!validateStep(2)) {
+      showStep(2);
+      return;
+    }
+    submit.disabled = true;
+    submit.textContent = "Enviando…";
+    window.setTimeout(function () {
+      form.hidden = true;
+      document.querySelector(".stepper").hidden = true;
+      finalPanel.hidden = false;
+      summary.hidden = true;
+      var heading = document.getElementById("h-final");
+      heading.setAttribute("tabindex", "-1");
+      heading.focus();
+      say("Reclamo en verificación. Te escribimos al contacto registrado.");
+      submit.disabled = false;
+      submit.textContent = submitLabel;
+      window.scrollTo({ top: 0, behavior: prefersReduced() ? "auto" : "smooth" });
+    }, prefersReduced() ? 60 : 620);
+  });
+
+  document.getElementById("undo-submit").addEventListener("click", function () {
+    finalPanel.hidden = true;
+    form.hidden = false;
+    document.querySelector(".stepper").hidden = false;
+    showStep(3);
+    say("Volviste al formulario. Nada se envió de nuevo.");
+  });
+
+  renderCompleteness();
+  refreshExtractCount();
+})();
+</script>
+</body>
+</html>

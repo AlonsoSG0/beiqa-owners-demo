@@ -1,0 +1,36 @@
+name: Pruebas
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Un push nuevo cancela la corrida anterior de la misma rama: no paga dos veces
+# por el mismo resultado.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  reglas:
+    name: Reglas de coincidencia (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      # El proyecto no tiene dependencias: no hay install, no hay lockfile,
+      # no hay caché que invalidar. Siete segundos y listo.
+      - name: Pruebas de las reglas
+        run: npm test
+      - name: Calidad del conjunto etiquetado
+        run: npm run corpus

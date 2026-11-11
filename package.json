@@ -1,0 +1,15 @@
+{
+  "name": "beiqa-owners-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Prototipo navegable de la Plataforma de Owners de BEIQA. Sin backend, reglas de coincidencia simuladas en JavaScript y datos generados.",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node scripts/serve.js",
+    "test": "node --test tests/*.test.js",
+    "corpus": "node tests/corpus.js"
+  }
+}
