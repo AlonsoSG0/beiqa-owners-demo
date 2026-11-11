@@ -1,0 +1,78 @@
+name: Etiquetas del PR
+
+# El origen se detecta por dos señales que se suman: el prefijo de la rama y un
+# trailer en los commits. Las dos son declaradas, no verificadas: un agente que
+# no las ponga es invisible. Lo único que GitHub no puede confundir con una
+# persona es una identidad separada (cuenta de máquina o GitHub App), que este
+# repo todavía no usa. Mientras tanto, medimos conociendo el margen de error.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: etiquetas-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  etiquetas:
+    name: Origen y tamaño
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Calcular y aplicar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMERO: ${{ github.event.pull_request.number }}
+          RAMA: ${{ github.event.pull_request.head.ref }}
+          ADICIONES: ${{ github.event.pull_request.additions }}
+          ELIMINADAS: ${{ github.event.pull_request.deletions }}
+        run: |
+          set -euo pipefail
+
+          lineas=$(( ADICIONES + ELIMINADAS ))
+          if   (( lineas <= 20  )); then tamano=size/xs
+          elif (( lineas <= 100 )); then tamano=size/s
+          elif (( lineas <= 400 )); then tamano=size/m
+          else                           tamano=size/l
+          fi
+
+          # Se recalculan en cada push: sin quitar las previas, un PR que baja
+          # de tamaño queda con dos etiquetas y la de 4.000 líneas sigue
+          # mintiendo.
+          previas=$(gh pr view "$NUMERO" --json labels \
+            --jq '[.labels[].name
+                  | select(startswith("size/") or . == "agent-pr")] | .[]')
+          for etiqueta in $previas; do
+            gh pr edit "$NUMERO" --remove-label "$etiqueta" >/dev/null
+          done
+
+          gh pr edit "$NUMERO" --add-label "$tamano"
+          echo "Tamaño: $tamano ($lineas líneas cambiadas)"
+
+          # Señal 1: la rama. Barata, visible, y se pierde si alguien la
+          # renombra.
+          origen=""
+          if [[ "$RAMA" == agent/* ]]; then origen="rama"; fi
+
+          # Señal 2: el trailer `Agent: <nombre>` en cualquier commit del PR.
+          # Viaja con el commit, sobrevive renombres de rama y en un PR mixto
+          # distingue cuáles commits fueron de un agente.
+          mensajes=$(gh api "repos/$GH_REPO/pulls/$NUMERO/commits" \
+            --paginate --jq '.[].commit.message' 2>/dev/null || true)
+          if grep -qE '^Agent: .+' <<<"$mensajes"; then
+            origen="${origen:+ambas}"
+            origen="${origen:-trailer}"
+          fi
+
+          if [[ -n "$origen" ]]; then
+            gh pr edit "$NUMERO" --add-label agent-pr
+            echo "Origen declarado por: $origen"
+          else
+            echo "Origen no declarado: sin prefijo agent/ ni trailer Agent:"
+          fi
