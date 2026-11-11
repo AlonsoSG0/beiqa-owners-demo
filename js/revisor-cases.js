@@ -103,10 +103,17 @@
     rows.push({
       field: 'Fotos',
       a: photosA.length ? photosA.length + ' propias' : 'Sin dato',
-      b: photosB.length ? (shared ? shared + ' compartida(s) de edificio' : photosB.length + ' distintas') : 'Sin dato',
+      b: photosLabel(photosB, shared),
       state: photosA.length && photosB.length ? (shared ? 'coincide' : 'difiere') : 'difiere',
     });
     return rows;
+  }
+
+  // El texto se lee también a 360 px: sin paréntesis, que se parten por cualquier lado.
+  function photosLabel(photos, shared) {
+    if (!photos.length) return 'Sin dato';
+    if (!shared) return photos.length + ' distintas';
+    return shared + (shared === 1 ? ' compartida' : ' compartidas') + ' del edificio';
   }
 
   // Consecuencia de fusionar, campo por campo. Sin esto el revisor decide a ciegas.

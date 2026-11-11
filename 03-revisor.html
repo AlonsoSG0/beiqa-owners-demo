@@ -144,7 +144,7 @@ button{font:inherit;color:inherit}
 .conv-state.coincide{color:var(--v-link)}
 .conv-state.difiere{color:var(--ink-3)}
 .conv-state.conflicto{color:var(--veto)}
-.conv-field{font-size:9.5px;letter-spacing:.08em;color:var(--ink-3);font-weight:700;text-transform:uppercase}
+.conv-field{font-size:9.5px;letter-spacing:.08em;color:var(--ink-3);font-weight:700;text-transform:uppercase;overflow-wrap:anywhere}
 
 /* señales */
 .sig{border:1px solid var(--rule);border-radius:var(--r-2);overflow:hidden;background:var(--paper-raised)}
@@ -254,6 +254,17 @@ button{font:inherit;color:inherit}
   .decision{position:static}
   .h-row{grid-template-columns:64px minmax(0,1fr);grid-template-areas:"time who" "what what";row-gap:2px}
   .h-time{grid-area:time}.h-who{grid-area:who}.h-what{grid-area:what}
+}
+@media (max-width:560px){
+  /* A 360 px el ancho útil es de ~328 px: con la columna central de 108 px, las dos
+     columnas de valores quedan por debajo de 110 px y las palabras largas se parten
+     por cualquier lado. Se angosta el centro y se afloja el interletrado. */
+  .conv{grid-template-columns:minmax(0,1fr) 90px minmax(0,1fr)}
+  .conv-cell{padding:7px 10px;font-size:12.5px}
+  .conv-cell.mid{padding:5px 4px;gap:3px}
+  .conv-field{font-size:9px;letter-spacing:.03em}
+  .conv-state{font-size:8.5px;letter-spacing:.02em}
+  .section-note{flex-basis:100%;text-align:left}
 }
 @media (max-width:860px){
   .topbar-inner{flex-wrap:wrap;height:auto;padding:9px var(--s-4);gap:9px}
