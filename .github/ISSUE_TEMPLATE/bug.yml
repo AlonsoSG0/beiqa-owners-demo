@@ -1,0 +1,68 @@
+name: Falla
+description: Algo no funciona como debería
+title: "[Falla] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar. Un issue accionable se puede
+        reproducir sin preguntarte nada.
+
+  - type: dropdown
+    id: pantalla
+    attributes:
+      label: Dónde pasa
+      options:
+        - Alta del owner (01)
+        - Posible duplicado (02)
+        - Vista del revisor (03)
+        - Panel del owner (04)
+        - Motor de coincidencia
+        - CI o repositorio
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Qué esperabas que pasara
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Qué pasa en realidad
+      description: >-
+        Si es un puntaje del motor, pega los números y el veredicto
+        que muestra la pantalla.
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Cómo reproducirlo
+      placeholder: |
+        1. Abrir 03-revisor.html
+        2. Seleccionar el caso con veto
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    id: ancho
+    attributes:
+      label: Ancho de pantalla, si es un problema visual
+      placeholder: "1440 px, 430 px, 360 px…"
+
+  - type: checkboxes
+    id: datos
+    attributes:
+      label: Antes de enviar
+      options:
+        - label: >-
+            No incluí datos personales, de clientes ni de owners
+            reales
+          required: true

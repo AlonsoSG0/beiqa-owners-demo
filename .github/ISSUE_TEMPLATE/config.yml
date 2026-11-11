@@ -1,0 +1,7 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ¿Dudas sobre las reglas de coincidencia?
+    url: https://github.com/AlonsoSG0/beiqa-owners-demo/blob/main/AGENTS.md
+    about: >-
+      Los invariantes del motor y del producto están documentados
+      antes de abrir un issue.
