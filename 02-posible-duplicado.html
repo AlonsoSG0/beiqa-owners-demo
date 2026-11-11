@@ -167,19 +167,12 @@ button{font:inherit;color:inherit}
       <h1 class="page-title">Este inmueble podría ya existir</h1>
       <p class="page-lede">No es un error: es una confirmación. Compara estos registros con el inmueble que estás dando de alta. Si es el mismo, lo reclamamos y se actualiza un solo expediente en lugar de abrir dos.</p>
     </div>
-    <p class="folio"><strong>Exp. AL-2481</strong>2 coincidencias<br><span class="num">15 mar 2025</span></p>
+    <p class="folio" id="candidate-count"></p>
   </div>
 
   <section class="own" aria-labelledby="h-own">
     <p class="own-label" id="h-own">Lo que registraste</p>
-    <div class="own-body">
-      <p class="own-title">Oficina en Polanco</p>
-      <dl class="own-data">
-        <div class="datum"><dt>Dirección</dt><dd>Av. Horacio 1850, Polanco</dd></div>
-        <div class="datum"><dt>Superficie</dt><dd class="num">420 m²</dd></div>
-        <div class="datum"><dt>Precio</dt><dd class="num">$520 / m²</dd></div>
-      </dl>
-    </div>
+    <div class="own-body" id="own-record"></div>
   </section>
 
   <p id="live" class="sr-only" role="status" aria-live="polite"></p>
@@ -187,56 +180,12 @@ button{font:inherit;color:inherit}
   <section class="candidates" id="candidates-block" aria-labelledby="h-cand">
     <div class="section-head">
       <h2 class="section-title" id="h-cand">Registros parecidos</h2>
-      <span class="section-note">2 registros · elige el que sea tu inmueble</span>
+      <span class="section-note" id="candidate-note"></span>
     </div>
 
     <fieldset style="border:0;padding:0;margin:0">
       <legend class="sr-only">Elige cuál de los registros es tu inmueble</legend>
-      <div class="cand-list">
-        <label class="cand">
-          <input type="radio" name="candidato" value="c-1850-p4">
-          <span class="cand-body">
-            <span class="cand-top">
-              <span>
-                <span class="cand-title">Oficina en Polanco, piso 4</span>
-                <span class="cand-addr" style="display:block">Av. Horacio 1850, Polanco</span>
-              </span>
-              <span class="cand-badge">Coincidencia alta</span>
-            </span>
-            <span class="cand-figures">
-              <span class="fig"><span class="fig-k">Superficie</span><span class="fig-v num">420 m²</span></span>
-              <span class="fig"><span class="fig-k">Precio</span><span class="fig-v num">$520 / m²</span></span>
-              <span class="fig"><span class="fig-k">Piso</span><span class="fig-v num">4</span></span>
-            </span>
-            <span class="reason">
-              <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path d="M2.5 8.6l3.4 3.3 7.6-8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>Coinciden el predio y la superficie en 5%.</span>
-            </span>
-          </span>
-        </label>
-
-        <label class="cand">
-          <input type="radio" name="candidato" value="c-1850-p6">
-          <span class="cand-body">
-            <span class="cand-top">
-              <span>
-                <span class="cand-title">Oficina en Polanco, piso 6</span>
-                <span class="cand-addr" style="display:block">Av. Horacio 1850, Polanco</span>
-              </span>
-              <span class="cand-badge">Coincidencia parcial</span>
-            </span>
-            <span class="cand-figures">
-              <span class="fig"><span class="fig-k">Superficie</span><span class="fig-v num">400 m²</span></span>
-              <span class="fig"><span class="fig-k">Precio</span><span class="fig-v num">$540 / m²</span></span>
-              <span class="fig"><span class="fig-k">Piso</span><span class="fig-v num">6</span></span>
-            </span>
-            <span class="reason">
-              <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path d="M8 2.2v6.4M8 11.9v.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-              <span>Coinciden el predio y la administradora; el piso es distinto (6 frente a 4).</span>
-            </span>
-          </span>
-        </label>
-      </div>
+      <div class="cand-list" id="candidate-list"></div>
     </fieldset>
 
     <p class="alert" id="claim-error" hidden>Elige cuál de los registros es tu inmueble antes de reclamarlo.</p>
@@ -254,7 +203,7 @@ button{font:inherit;color:inherit}
       <span class="status-mark">En verificación</span>
       <h2 class="status-title" id="h-claim">Reclamo en verificación</h2>
     </div>
-    <p class="status-text" id="claim-detail">Reclamaste <strong>Oficina en Polanco, piso 4 · Av. Horacio 1850</strong>. Un asesor de BEIQA confirma la titularidad con tu contacto antes de publicar; normalmente toma un día hábil.</p>
+    <p class="status-text" id="claim-detail"></p>
     <ul class="status-steps">
       <li><span class="num" aria-hidden="true">1</span><span>Confirmamos que el inmueble es tuyo con el contacto registrado.</span></li>
       <li><span class="num" aria-hidden="true">2</span><span>El expediente se actualiza con tus datos; no se abre uno nuevo.</span></li>
@@ -271,7 +220,7 @@ button{font:inherit;color:inherit}
       <span class="status-mark">Validación</span>
       <h2 class="status-title" id="h-new">Pasa a validación del asesor</h2>
     </div>
-    <p class="status-text">Quedas como registro nuevo de <strong>Oficina en Polanco · Av. Horacio 1850</strong>. Un asesor de BEIQA confirma los datos y descarta la coincidencia antes de publicar; te escribimos si encuentra algo que aclarar.</p>
+    <p class="status-text" id="new-detail"></p>
     <ul class="status-steps">
       <li><span class="num" aria-hidden="true">1</span><span>El asesor revisa la coincidencia que descartaste y tu expediente.</span></li>
       <li><span class="num" aria-hidden="true">2</span><span>Si aparece otra coincidencia, te la mostramos antes de fusionar.</span></li>
@@ -294,99 +243,10 @@ button{font:inherit;color:inherit}
   </p>
 </main>
 
-<script>
-(function () {
-  "use strict";
-
-  var live = document.getElementById("live");
-  var radios = Array.prototype.slice.call(document.querySelectorAll('input[name="candidato"]'));
-  var claim = document.getElementById("btn-claim");
-  var notMine = document.getElementById("btn-not-mine");
-  var claimError = document.getElementById("claim-error");
-  var actions = document.getElementById("decision-actions");
-  var statusClaim = document.getElementById("status-claim");
-  var statusNew = document.getElementById("status-new");
-  var claimDetail = document.getElementById("claim-detail");
-  var candidatesBlock = document.getElementById("candidates-block");
-
-  var labels = {
-    "c-1850-p4": "Oficina en Polanco, piso 4 · Av. Horacio 1850",
-    "c-1850-p6": "Oficina en Polanco, piso 6 · Av. Horacio 1850"
-  };
-
-  function say(message) {
-    live.textContent = "";
-    window.setTimeout(function () { live.textContent = message; }, 30);
-  }
-
-  function selected() {
-    var found = radios.filter(function (radio) { return radio.checked; })[0];
-    return found ? found.value : null;
-  }
-
-  function showStatus(which) {
-    statusClaim.hidden = which !== "claim";
-    statusNew.hidden = which !== "new";
-    candidatesBlock.hidden = which !== null;
-    claimError.hidden = true;
-    var heading = which === "claim" ? document.getElementById("h-claim") : document.getElementById("h-new");
-    if (which && heading) {
-      heading.setAttribute("tabindex", "-1");
-      heading.focus();
-    }
-    if (which) {
-      window.scrollTo({ top: 0, behavior: prefersReduced() ? "auto" : "smooth" });
-    }
-  }
-
-  function prefersReduced() {
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }
-
-  radios.forEach(function (radio) {
-    radio.addEventListener("change", function () {
-      claimError.hidden = true;
-    });
-  });
-
-  claim.addEventListener("click", function () {
-    var value = selected();
-    if (!value) {
-      claimError.hidden = false;
-      say("Falta elegir cuál registro es tu inmueble.");
-      if (radios[0]) { radios[0].focus(); }
-      return;
-    }
-    claimDetail.textContent = "";
-    claimDetail.append("Reclamaste ");
-    var strong = document.createElement("strong");
-    strong.textContent = labels[value];
-    claimDetail.append(strong, ". Un asesor de BEIQA confirma la titularidad con tu contacto antes de publicar; normalmente toma un día hábil.");
-    showStatus("claim");
-    say("Reclamo en verificación para " + labels[value] + ".");
-  });
-
-  notMine.addEventListener("click", function () {
-    showStatus("new");
-    say("El inmueble pasa a validación del asesor.");
-  });
-
-  document.getElementById("undo-claim").addEventListener("click", function () {
-    showStatus(null);
-    actions.hidden = false;
-    say("Reclamo deshecho. Vuelves a elegir.");
-    var first = radios[0];
-    if (first) { first.focus(); }
-  });
-
-  document.getElementById("undo-new").addEventListener("click", function () {
-    showStatus(null);
-    actions.hidden = false;
-    say("Deshecho. El inmueble queda otra vez en la comparación.");
-    var first = radios[0];
-    if (first) { first.focus(); }
-  });
-})();
-</script>
+<script src="js/data.js"></script>
+<script src="js/matching.js"></script>
+<script src="js/revisor-cases.js"></script>
+<script src="js/store.js"></script>
+<script src="js/duplicado-ui.js"></script>
 </body>
 </html>
