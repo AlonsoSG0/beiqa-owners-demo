@@ -1,0 +1,11 @@
+# Material interno del caso — no se redistribuye
+Caso-practico-Plataforma-de-Owners-Full-Stack.md
+beiqa-caso-owners-contexto-para-agente.md
+demo-contrato-de-decision.md
+diagrama-ecosistema.png
+
+# Herramientas locales
+.atl/
+node_modules/
+.DS_Store
+*.log
