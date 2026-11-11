@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisor · BEIQA Owners</title>
+<style>
+:root{
+  --paper:#F7F5F0;
+  --paper-raised:#FBFAF7;
+  --paper-sunken:#EFEBE2;
+  --ink:#121A24;
+  --ink-2:#33404F;
+  --ink-3:#5C6876;
+  --rule:#DAD4C8;
+  --rule-strong:#BDB5A5;
+
+  --v-link:#2F6B4F;  --v-link-bg:#E8EFE8;  --v-link-line:#B2C9B6;
+  --v-review:#8C5A0C; --v-review-bg:#F5E9D2; --v-review-line:#D8BE8C;
+  --v-discard:#4A5561; --v-discard-bg:#E8E8E5; --v-discard-line:#C2C5C2;
+  --veto:#A32020; --veto-bg:#F8E6E3; --veto-line:#DDB4AC;
+
+  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-doc:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px;
+  --s-7:32px; --s-8:40px; --s-9:56px;
+  --r-1:2px; --r-2:3px; --r-3:4px;
+  --dur-in:200ms; --dur-out:140ms; --ease:cubic-bezier(.23,1,.32,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:14.5px;line-height:1.5;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;line-height:1.25;font-weight:650;letter-spacing:-.01em}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:var(--r-1)}
+[hidden]{display:none !important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:8px;z-index:80;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:var(--r-2);text-decoration:none;font-weight:600}
+.skip:focus{left:16px}
+.num{font-variant-numeric:tabular-nums}
+
+/* barra superior compartida */
+.topbar{position:sticky;top:0;z-index:40;background:var(--paper);border-bottom:1px solid var(--rule)}
+.topbar-inner{max-width:1500px;margin:0 auto;display:flex;align-items:center;gap:var(--s-6);padding:0 var(--s-5);height:56px}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand-mark{font-size:14.5px;font-weight:700;letter-spacing:.2em}
+.brand-sub{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-link{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid transparent;border-radius:var(--r-1);text-decoration:none;font-size:12.5px;font-weight:550;color:var(--ink-2);white-space:nowrap;transition:background var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.nav-link:hover{background:var(--paper-sunken);color:var(--ink)}
+.nav-link[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.nav-link[aria-current="page"]:hover{background:var(--ink);color:var(--paper)}
+.nav-n{font-size:10px;letter-spacing:.08em;opacity:.72}
+
+/* layout herramienta */
+.tool{display:grid;grid-template-columns:352px minmax(0,1fr);height:calc(100vh - 56px);max-width:1500px;margin:0 auto}
+.queue{border-right:1px solid var(--rule-strong);display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;min-height:0;background:var(--paper)}
+.queue-head{padding:var(--s-4) var(--s-4) var(--s-3);border-bottom:1px solid var(--rule)}
+.queue-title{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-3)}
+.queue-title h1{font-family:var(--font-doc);font-size:21px;font-weight:600;letter-spacing:-.01em}
+.queue-count{font-size:12px;color:var(--ink-3)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;padding:10px var(--s-4);border-bottom:1px solid var(--rule)}
+.filter{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 9px;border:1px solid var(--rule);border-radius:var(--r-1);background:var(--paper);color:var(--ink-2);font-size:11.5px;font-weight:600;cursor:pointer;transition:background var(--dur-in) var(--ease),border-color var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.filter:hover{border-color:var(--ink-3);color:var(--ink)}
+.filter[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.filter .n{opacity:.7;font-variant-numeric:tabular-nums}
+.queue-list{overflow-y:auto;min-height:0;scrollbar-width:thin}
+.q-item{display:grid;gap:5px;width:100%;text-align:left;padding:12px var(--s-4);border:0;border-bottom:1px solid var(--rule);background:transparent;cursor:pointer;border-left:2px solid transparent;transition:background var(--dur-in) var(--ease),border-color var(--dur-in) var(--ease)}
+.q-item:hover{background:var(--paper-raised)}
+.q-item[aria-current="true"]{background:var(--paper-raised);border-left-color:var(--ink)}
+.q-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.q-id{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.q-score{font-size:13px;font-weight:700;color:var(--ink-2)}
+.q-score.is-none{color:var(--ink-3);font-weight:600}
+.q-title{font-size:13.5px;font-weight:650;line-height:1.35}
+.q-sub{font-size:12px;color:var(--ink-3)}
+.q-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+.q-veto{font-size:11.5px;color:var(--veto);font-weight:600;display:flex;gap:5px;align-items:flex-start;line-height:1.35}
+.q-veto svg{flex:none;margin-top:2px}
+.queue-foot{padding:10px var(--s-4);border-top:1px solid var(--rule);font-size:11.5px;color:var(--ink-3);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+
+/* sellos */
+.seal{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border:1px solid;border-radius:var(--r-1);font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;line-height:1.5}
+.seal--vincular{color:var(--v-link);background:var(--v-link-bg);border-color:var(--v-link-line)}
+.seal--revisar{color:var(--v-review);background:var(--v-review-bg);border-color:var(--v-review-line)}
+.seal--descartar{color:var(--v-discard);background:var(--v-discard-bg);border-color:var(--v-discard-line)}
+.seal--sin{color:var(--ink-2);background:var(--paper-sunken);border-color:var(--rule-strong)}
+.seal--lg{font-size:12px;padding:5px 11px;letter-spacing:.09em}
+
+/* detalle */
+.detail{overflow-y:auto;min-height:0;display:grid;grid-template-rows:auto;align-content:start;background:var(--paper)}
+.detail-head{padding:var(--s-4) var(--s-6) 0;border-bottom:1px solid var(--rule-strong);background:var(--paper-raised)}
+.dh-crumb{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);padding-bottom:var(--s-3)}
+.eyebrow{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.dh-nav{display:flex;gap:4px}
+.icon-btn{display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:0 9px;border:1px solid var(--rule);border-radius:var(--r-1);background:var(--paper);color:var(--ink-2);font-size:11.5px;font-weight:600;cursor:pointer}
+.icon-btn:hover{border-color:var(--ink-3);color:var(--ink)}
+.icon-btn[disabled]{opacity:.4;cursor:not-allowed}
+.dh-main{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-6);padding-bottom:var(--s-3)}
+.dh-verdict{display:grid;gap:8px;min-width:0}
+.verdict-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.coverage{font-size:13px;color:var(--ink-2)}
+.coverage strong{font-weight:700;color:var(--ink)}
+.coverage.is-partial{color:var(--v-review)}
+.stamp{flex:none;text-align:right;display:grid;gap:1px;padding:6px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-1);background:var(--paper);min-width:96px}
+.stamp-num{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.stamp-of{font-size:10.5px;color:var(--ink-3);font-weight:600}
+.stamp-label{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+
+.veto-band{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s-3) var(--s-4);align-items:start;padding:10px var(--s-6);background:var(--veto-bg);border-top:1px solid var(--veto-line);border-bottom:1px solid var(--veto-line);margin:0 calc(-1 * var(--s-6))}
+.veto-mark{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--veto);border:1px solid var(--veto-line);background:var(--paper-raised);border-radius:var(--r-1);padding:2px 7px;white-space:nowrap}
+.veto-text{font-size:14px;font-weight:650;color:var(--veto);line-height:1.4}
+.veto-note{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+
+.records{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s-5);padding:var(--s-4) var(--s-6) var(--s-3)}
+.record{display:grid;gap:2px;min-width:0}
+.record-role{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-3);display:flex;align-items:center;gap:6px}
+.record-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.record-sub{font-size:12.5px;color:var(--ink-2)}
+.record-meta{font-size:11.5px;color:var(--ink-3)}
+.tag-verified{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--v-link);border:1px solid var(--v-link-line);background:var(--v-link-bg);border-radius:var(--r-1);padding:1px 5px}
+
+.section{padding:var(--s-4) var(--s-6);border-top:1px solid var(--rule)}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-3)}
+.section-title{display:flex;align-items:baseline;gap:9px;font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.section-n{font-size:10px;color:var(--ink-3);letter-spacing:.06em}
+.section-note{font-size:11.5px;color:var(--ink-3);text-align:right}
+.section-note.warn{color:var(--v-review);font-weight:600}
+
+/* convergencia */
+.conv{display:grid;grid-template-columns:minmax(0,1fr) 148px minmax(0,1fr);border:1px solid var(--rule);border-radius:var(--r-2);overflow:hidden;background:var(--paper-raised)}
+.conv-cell{padding:8px var(--s-3);border-bottom:1px solid var(--rule);font-size:13px;display:flex;align-items:center;min-width:0}
+.conv-cell.a{justify-content:flex-end;text-align:right}
+.conv-cell.mid{justify-content:center;text-align:center;background:var(--paper);border-left:1px solid var(--rule);border-right:1px solid var(--rule);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--ink-3);gap:5px;flex-direction:column;padding:6px var(--s-2)}
+.conv-cell:nth-last-child(-n+3){border-bottom:0}
+.conv-cell .val{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.conv-cell .val.missing{color:var(--ink-3);font-weight:500}
+.conv-state{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.conv-state.coincide{color:var(--v-link)}
+.conv-state.difiere{color:var(--ink-3)}
+.conv-state.conflicto{color:var(--veto)}
+.conv-field{font-size:9.5px;letter-spacing:.08em;color:var(--ink-3);font-weight:700;text-transform:uppercase}
+
+/* señales */
+.sig{border:1px solid var(--rule);border-radius:var(--r-2);overflow:hidden;background:var(--paper-raised)}
+.sig-row{display:grid;grid-template-columns:132px minmax(60px,1fr) 62px minmax(0,1.35fr);gap:var(--s-3);align-items:center;padding:6px var(--s-3);border-bottom:1px solid var(--rule);font-size:12.5px}
+.sig-row:last-child{border-bottom:0}
+.sig-name{font-weight:650;display:flex;align-items:center;gap:6px}
+.sig-bar{height:6px;background:var(--paper-sunken);border-radius:3px;overflow:hidden;border:1px solid var(--rule)}
+.sig-fill{display:block;height:100%;background:var(--ink)}
+.sig-fill.is-partial{background:var(--v-review)}
+.sig-fill.is-zero{background:var(--rule-strong)}
+.sig-pts{text-align:right;font-size:12px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+.sig-pts.is-missing{color:var(--ink-3);font-weight:600}
+.sig-note{color:var(--ink-2);font-size:12px;overflow-wrap:anywhere}
+.sig-total{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);padding:8px var(--s-3);border-top:1px solid var(--rule-strong);background:var(--paper);font-size:12.5px}
+.sig-total strong{font-size:13.5px}
+
+/* diff */
+.diff{border:1px solid var(--rule);border-radius:var(--r-2);overflow:hidden}
+.diff-head{display:grid;grid-template-columns:154px minmax(0,1fr) minmax(0,1.15fr);gap:var(--s-3);padding:7px var(--s-3);background:var(--paper-sunken);border-bottom:1px solid var(--rule);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.diff-row{display:grid;grid-template-columns:154px minmax(0,1fr) minmax(0,1.15fr);gap:var(--s-3);padding:9px var(--s-3);border-bottom:1px solid var(--rule);background:var(--paper-raised);font-size:12.5px}
+.diff-row:last-child{border-bottom:0}
+.diff-field{font-weight:650;overflow-wrap:anywhere}
+.diff-values{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;color:var(--ink-2)}
+.diff-values .a{color:var(--ink-3);text-decoration:line-through;text-decoration-thickness:1px}
+.diff-values .b{font-weight:650;color:var(--ink)}
+.diff-values .loss{color:var(--veto);font-weight:650;text-decoration:none}
+.diff-values .empty{color:var(--ink-3);font-style:normal}
+.diff-rule{display:grid;gap:3px;min-width:0}
+.prec{font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--ink-2)}
+.prec.is-open{color:var(--v-review)}
+.cons{font-size:12px;color:var(--ink-2);overflow-wrap:anywhere}
+.cons.is-loss{color:var(--veto)}
+
+.check-row{display:flex;align-items:flex-start;gap:9px;margin-top:var(--s-3);padding:10px var(--s-3);border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper);cursor:pointer;font-size:12.5px}
+.check-row input{margin:2px 0 0;width:16px;height:16px;accent-color:var(--ink);flex:none}
+.check-row span{color:var(--ink-2)}
+.check-row strong{color:var(--ink)}
+
+/* decisión */
+.decision{padding:var(--s-4) var(--s-6);border-top:1px solid var(--rule-strong);background:var(--paper-raised);position:sticky;bottom:0;z-index:10}
+.decision-state{display:flex;align-items:center;gap:var(--s-3);flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)}
+.state-mark{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--ink-3);border:1px solid var(--rule-strong);border-radius:var(--r-1);padding:2px 6px;white-space:nowrap}
+.state-mark.is-done{color:var(--v-link);border-color:var(--v-link-line);background:var(--v-link-bg)}
+.state-mark.is-review{color:var(--v-review);border-color:var(--v-review-line);background:var(--v-review-bg)}
+.state-mark.is-veto{color:var(--veto);border-color:var(--veto-line);background:var(--veto-bg)}
+.decision-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper);color:var(--ink);font-size:12.5px;font-weight:650;text-decoration:none;cursor:pointer;transition:background var(--dur-in) var(--ease),border-color var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.btn:hover{background:var(--paper-sunken);border-color:var(--ink-3)}
+.btn--primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn--primary:hover{background:#1D2937;border-color:#1D2937;color:var(--paper)}
+.btn--quiet{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn--quiet:hover{background:var(--paper-sunken);color:var(--ink)}
+.btn--danger{color:var(--veto);border-color:var(--veto-line)}
+.btn--danger:hover{background:var(--veto-bg);border-color:var(--veto)}
+.btn[disabled]{opacity:.42;cursor:not-allowed}
+.btn[disabled]:hover{background:var(--paper);border-color:var(--rule-strong);color:var(--ink)}
+.decision-actions .spacer{margin-left:auto}
+.error-line{font-size:11.5px;color:var(--veto);font-weight:650;margin-top:8px}
+
+.confirm{margin-top:10px;border:1px solid var(--veto-line);border-left-width:3px;border-radius:var(--r-2);background:var(--veto-bg);padding:10px var(--s-3);display:grid;gap:8px}
+.confirm-text{font-size:12.5px;color:var(--ink);line-height:1.45}
+.confirm-text strong{color:var(--veto)}
+.confirm-actions{display:flex;gap:6px;flex-wrap:wrap}
+.confirm-actions .btn{background:var(--paper-raised)}
+
+.ask{margin-top:10px;border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper);padding:10px var(--s-3);display:grid;gap:8px}
+.ask label{font-size:11.5px;font-weight:650;color:var(--ink-2)}
+.ask textarea{width:100%;min-height:60px;font:inherit;font-size:12.5px;padding:8px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper-raised);color:var(--ink);resize:vertical}
+.ask textarea:focus{border-color:var(--ink);outline:none}
+
+/* historial */
+.history{display:grid;gap:0;border:1px solid var(--rule);border-radius:var(--r-2);overflow:hidden}
+.h-row{display:grid;grid-template-columns:74px 132px minmax(0,1fr);gap:var(--s-3);padding:7px var(--s-3);border-bottom:1px solid var(--rule);font-size:12px;background:var(--paper-raised)}
+.h-row:last-child{border-bottom:0}
+.h-time{color:var(--ink-3);font-weight:650;font-size:11.5px;white-space:nowrap}
+.h-who{color:var(--ink-2);font-weight:650;font-size:11.5px}
+.h-what{color:var(--ink);overflow-wrap:anywhere}
+.h-what em{font-style:normal;color:var(--ink-3)}
+
+/* vacío */
+.empty{padding:var(--s-8) var(--s-6);display:grid;gap:var(--s-3);justify-items:start;max-width:66ch}
+.empty h2{font-family:var(--font-doc);font-size:24px;font-weight:600}
+.empty p{color:var(--ink-2);font-size:14px}
+.empty-list{display:grid;gap:7px;margin-top:6px}
+.empty-list li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;font-size:13px;color:var(--ink-2)}
+.empty-n{color:var(--ink-3);font-size:11px;font-weight:700;border:1px solid var(--rule-strong);border-radius:50%;width:18px;height:18px;display:grid;place-items:center}
+
+@media (max-width:1180px){
+  .tool{grid-template-columns:310px minmax(0,1fr)}
+  .conv{grid-template-columns:minmax(0,1fr) 122px minmax(0,1fr)}
+  .sig-row{grid-template-columns:112px minmax(50px,1fr) 58px minmax(0,1.2fr)}
+}
+@media (max-width:980px){
+  .tool{grid-template-columns:1fr;height:auto}
+  .queue{border-right:0;border-bottom:1px solid var(--rule-strong)}
+  .queue-list{max-height:320px}
+  .detail{overflow:visible}
+  .conv{grid-template-columns:minmax(0,1fr) 108px minmax(0,1fr)}
+  .sig-row{grid-template-columns:minmax(0,1fr) 58px;row-gap:4px}
+  .sig-bar{grid-column:1 / -1;order:3}
+  .sig-note{grid-column:1 / -1;order:4}
+  .diff-head{display:none}
+  .diff-row{grid-template-columns:1fr;gap:4px}
+  .records{grid-template-columns:1fr;gap:var(--s-3)}
+  .dh-main{flex-direction:column;gap:var(--s-3)}
+  .stamp{text-align:left;min-width:0;width:100%}
+  .decision{position:static}
+  .h-row{grid-template-columns:64px minmax(0,1fr);grid-template-areas:"time who" "what what";row-gap:2px}
+  .h-time{grid-area:time}.h-who{grid-area:who}.h-what{grid-area:what}
+}
+@media (max-width:860px){
+  .topbar-inner{flex-wrap:wrap;height:auto;padding:9px var(--s-4);gap:9px}
+  .nav{margin-left:0;width:100%}
+  .detail-head,.section,.decision{padding-left:var(--s-4);padding-right:var(--s-4)}
+  .records{padding-left:var(--s-4);padding-right:var(--s-4)}
+  .veto-band{margin-left:calc(-1 * var(--s-4));margin-right:calc(-1 * var(--s-4));padding-left:var(--s-4);padding-right:var(--s-4)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:1ms !important;animation-duration:1ms !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#detalle">Saltar a la cola de revisión</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">BEIQA</span>
+      <span class="brand-sub">Revisor interno</span>
+    </div>
+    <nav class="nav" aria-label="Flujo del prototipo">
+      <a class="nav-link" href="01-alta-owner.html"><span class="nav-n">01</span> Alta del owner</a>
+      <a class="nav-link" href="02-posible-duplicado.html"><span class="nav-n">02</span> Posible duplicado</a>
+      <a class="nav-link" href="03-revisor.html" aria-current="page"><span class="nav-n">03</span> Revisor</a>
+      <a class="nav-link" href="04-panel-owner.html"><span class="nav-n">04</span> Panel del owner</a>
+    </nav>
+  </div>
+</header>
+
+<div class="tool">
+  <aside class="queue" aria-labelledby="queue-title">
+    <div class="queue-head">
+      <div class="queue-title">
+        <h1 id="queue-title">Cola de revisión</h1>
+        <span class="queue-count num" id="queue-count">5 casos</span>
+      </div>
+    </div>
+    <div class="filters" id="filters" role="group" aria-label="Filtrar la cola por veredicto">
+      <button type="button" class="filter" data-filter="todos" aria-pressed="true">Todos <span class="n num" id="n-todos">5</span></button>
+      <button type="button" class="filter" data-filter="vincular" aria-pressed="false">Vincular <span class="n num" id="n-vincular">1</span></button>
+      <button type="button" class="filter" data-filter="revisar" aria-pressed="false">Revisar <span class="n num" id="n-revisar">2</span></button>
+      <button type="button" class="filter" data-filter="descartar" aria-pressed="false">Descartar <span class="n num" id="n-descartar">1</span></button>
+      <button type="button" class="filter" data-filter="sin" aria-pressed="false">Sin coincidencias <span class="n num" id="n-sin">1</span></button>
+    </div>
+    <ul class="queue-list" id="queue-list"></ul>
+    <div class="queue-foot">
+      <span>Ordenada por score del motor</span>
+      <span id="queue-updated">Actualizada 11:42</span>
+    </div>
+  </aside>
+
+  <main class="detail" id="detalle" tabindex="-1">
+    <div id="detail-body"></div>
+  </main>
+</div>
+
+<p id="live" class="sr-only" role="status" aria-live="polite"></p>
+
+<script>
+(function () {
+  "use strict";
+
+  var CASES = [
+    {
+      id: "P-01",
+      ref: "PROP-101 ↔ A-4471",
+      short: "Oficina en Polanco, piso 4 ↔ piso 6",
+      title: "Oficina en Polanco, piso 4 ↔ registro entrante del piso 6",
+      verdict: "revisar",
+      score: 98,
+      compared: 8,
+      total: 8,
+      veto: "Mismo edificio, piso distinto (4 vs 6)",
+      vetoNote: "Un veto gana al puntaje: con 98 de score, el caso no se vincula solo.",
+      a: { role: "Registro A · propiedad", title: "PROP-101", sub: "Oficina en Polanco, piso 4 · Av. Horacio 1850", meta: "Validada por asesor · 4 mar 2025", verified: true },
+      b: { role: "Registro B · anuncio entrante", title: "A-4471", sub: "Oficina en Polanco, piso 6 · Av. Horacio 1850", meta: "Portal masivo + brochure · 12 mar 2025", verified: false },
+      rows: [
+        { field: "Dirección", a: "Av. Horacio 1850, Polanco", b: "Av. Horacio 1850, Polanco", state: "coincide" },
+        { field: "Superficie rentable", a: "420 m²", b: "400 m²", state: "difiere" },
+        { field: "Precio por m²", a: "$520", b: "$540", state: "difiere" },
+        { field: "Piso", a: "4", b: "6", state: "conflicto" },
+        { field: "Estacionamientos", a: "8", b: "12", state: "conflicto" },
+        { field: "Actor", a: "Inmobiliaria Polanco", b: "Misma administradora", state: "coincide" },
+        { field: "Fotos", a: "14 propias", b: "3 compartidas de edificio", state: "coincide" }
+      ],
+      signals: [
+        { name: "Ubicación", pts: 25, max: 25, note: "Mismo predio, colonia Polanco" },
+        { name: "Dirección", pts: 20, max: 20, note: "Av. Horacio 1850 idéntica" },
+        { name: "Superficie rentable", pts: 15, max: 15, note: "420 vs 400 m², 5% de diferencia" },
+        { name: "Precio por m²", pts: 10, max: 10, note: "$520 vs $540, 3.8% de diferencia" },
+        { name: "Tipo", pts: 10, max: 10, note: "Oficina en los dos registros" },
+        { name: "Fotos", pts: 10, max: 10, note: "3 fotos de edificio compartidas" },
+        { name: "Actor", pts: 5, max: 5, note: "Misma administradora en ambos" },
+        { name: "Atributos técnicos", pts: 3, max: 5, note: "Piso 4 vs 6 y estacionamientos 8 vs 12" }
+      ],
+      diff: [
+        { field: "Superficie rentable", a: "420 m²", b: "400 m²", prec: "Gana el owner verificado", cons: "Se conserva 420 m²; los 20 m² de diferencia quedan como observación fechada." },
+        { field: "Precio por m²", a: "$520", b: "$540", prec: "Gana el owner verificado", cons: "Se conserva $520/m²; el precio del portal se guarda como referencia." },
+        { field: "Piso", a: "4", b: "6", prec: "Gana el owner verificado", cons: "Si fusionas, se pierde: piso 6, solo en el registro B.", loss: true },
+        { field: "Estacionamientos", a: "8", b: "12", prec: "Gana el owner verificado", cons: "Si fusionas, se pierde: 12 cajones, solo en el registro B.", loss: true },
+        { field: "Frente", a: "Sin dato", b: "8 m", prec: "Sin conflicto: solo un registro lo tiene", cons: "Si fusionas, se agrega frente 8 m al expediente.", add: true }
+      ],
+      history: [
+        { time: "11:38", who: "Motor BEIQA", what: "Registro A-4471 ingresó a la cola con veto de piso." },
+        { time: "10:12", who: "Sofía R.", what: "PROP-101 validada", note: "Titularidad confirmada con el owner." },
+        { time: "09:47", who: "Motor BEIQA", what: "Veto registrado: mismo edificio, piso distinto (4 vs 6)." }
+      ]
+    },
+    {
+      id: "P-02",
+      ref: "PROP-102 ↔ A-4488",
+      short: "Nave industrial Toluca ↔ Lote 7",
+      title: "Nave industrial en Toluca ↔ registro entrante del Lote 7",
+      verdict: "vincular",
+      score: 96,
+      compared: 8,
+      total: 8,
+      veto: null,
+      vetoNote: null,
+      a: { role: "Registro A · propiedad", title: "PROP-102", sub: "Nave industrial en Toluca · Parque Industrial Toluca, Lote 7", meta: "Validada por asesor · 28 feb 2025", verified: true },
+      b: { role: "Registro B · anuncio entrante", title: "A-4488", sub: "Nave industrial en Toluca · Parque Industrial Toluca, Lote 7", meta: "Broker con mandato · 13 mar 2025", verified: false },
+      rows: [
+        { field: "Dirección", a: "Parque Industrial Toluca, Lote 7", b: "Parque Industrial Toluca, Lote 7", state: "coincide" },
+        { field: "Superficie rentable", a: "2,500 m²", b: "2,480 m²", state: "difiere" },
+        { field: "Precio por m²", a: "$145", b: "$147", state: "difiere" },
+        { field: "Tipo", a: "Nave industrial", b: "Nave industrial", state: "coincide" },
+        { field: "Actor", a: "Grupo Industrial MX", b: "Misma administradora", state: "coincide" },
+        { field: "Fotos", a: "9 propias", b: "4 del mismo patio", state: "coincide" },
+        { field: "Atributos técnicos", a: "Altura 9 m, carga 5 t/m²", b: "Sin datos técnicos", state: "conflicto" }
+      ],
+      signals: [
+        { name: "Ubicación", pts: 25, max: 25, note: "Mismo predio, Lote 7" },
+        { name: "Dirección", pts: 20, max: 20, note: "Dirección idéntica en ambos registros" },
+        { name: "Superficie rentable", pts: 15, max: 15, note: "2,500 vs 2,480 m², 0.8% de diferencia" },
+        { name: "Precio por m²", pts: 10, max: 10, note: "$145 vs $147, 1.4% de diferencia" },
+        { name: "Tipo", pts: 10, max: 10, note: "Nave industrial en ambos" },
+        { name: "Fotos", pts: 10, max: 10, note: "4 fotos del mismo patio" },
+        { name: "Actor", pts: 5, max: 5, note: "Grupo Industrial MX en los dos" },
+        { name: "Atributos técnicos", pts: 1, max: 5, note: "El registro B no publica altura ni carga de piso" }
+      ],
+      diff: [
+        { field: "Superficie rentable", a: "2,500 m²", b: "2,480 m²", prec: "Gana el owner verificado", cons: "Vincular no fusiona: 2,480 m² queda como observación fechada del anuncio." },
+        { field: "Precio por m²", a: "$145", b: "$147", prec: "Gana el owner verificado", cons: "El precio del anuncio queda como referencia, con fecha." },
+        { field: "Atributos técnicos", a: "Altura 9 m · carga 5 t/m²", b: "Sin dato", prec: "Sin conflicto: el registro B no aporta", cons: "No se pierde nada al vincular; el expediente conserva los datos del owner." }
+      ],
+      history: [
+        { time: "11:40", who: "Motor BEIQA", what: "Registro A-4488 entró con 96 de score y sin vetos." },
+        { time: "08:30", who: "Motor BEIQA", what: "Fotos del patio comparadas con PROP-102: coincidencia." }
+      ]
+    },
+    {
+      id: "P-03",
+      ref: "PROP-102 ↔ ANUN-201",
+      short: "Nave en Toluca, dirección distinta",
+      title: "Nave industrial en Toluca ↔ anuncio en Av. Industria 123",
+      verdict: "revisar",
+      score: 75,
+      compared: 8,
+      total: 8,
+      veto: null,
+      vetoNote: null,
+      a: { role: "Registro A · propiedad", title: "PROP-102", sub: "Parque Industrial Toluca, Lote 7", meta: "Validada por asesor · 28 feb 2025", verified: true },
+      b: { role: "Registro B · anuncio entrante", title: "ANUN-201", sub: "Nave en Av. Industria 123, Toluca", meta: "Portal masivo · 11 mar 2025", verified: false },
+      rows: [
+        { field: "Dirección", a: "Parque Industrial Toluca, Lote 7", b: "Av. Industria 123, Toluca", state: "conflicto" },
+        { field: "Superficie rentable", a: "2,500 m²", b: "2,300 m²", state: "difiere" },
+        { field: "Precio por m²", a: "$145", b: "$150", state: "difiere" },
+        { field: "Tipo", a: "Nave industrial", b: "Nave industrial", state: "coincide" },
+        { field: "Actor", a: "Grupo Industrial MX", b: "Portal masivo", state: "difiere" },
+        { field: "Fotos", a: "9 propias", b: "Sin fotos comparables", state: "difiere" },
+        { field: "Atributos técnicos", a: "Altura 9 m, carga 5 t/m²", b: "Sin datos técnicos", state: "conflicto" }
+      ],
+      signals: [
+        { name: "Ubicación", pts: 25, max: 25, note: "Mismo predio, Parque Industrial Toluca" },
+        { name: "Dirección", pts: 8, max: 20, note: "Parque Industrial Toluca, Lote 7 vs Av. Industria 123" },
+        { name: "Superficie rentable", pts: 12, max: 15, note: "2,500 vs 2,300 m², 8% de diferencia" },
+        { name: "Precio por m²", pts: 9, max: 10, note: "$145 vs $150, 3.4% de diferencia" },
+        { name: "Tipo", pts: 10, max: 10, note: "Nave industrial en ambos" },
+        { name: "Fotos", pts: 4, max: 10, note: "No hay fotos en común" },
+        { name: "Actor", pts: 3, max: 5, note: "Grupo Industrial MX vs portal masivo" },
+        { name: "Atributos técnicos", pts: 4, max: 5, note: "El anuncio no publica altura ni carga de piso" }
+      ],
+      diff: [
+        { field: "Dirección", a: "Parque Industrial Toluca, Lote 7", b: "Av. Industria 123, Toluca", prec: "Requiere revisión humana", precOpen: true, cons: "El predio coincide, la dirección no. Si fusionas, se pierde: dirección del portal." },
+        { field: "Superficie rentable", a: "2,500 m²", b: "2,300 m²", prec: "Gana el owner verificado", cons: "Se conserva 2,500 m²; los 200 m² del anuncio quedan como observación." },
+        { field: "Precio por m²", a: "$145", b: "$150", prec: "Gana el owner verificado", cons: "Se conserva $145/m²; el precio del portal se guarda con fecha." }
+      ],
+      history: [
+        { time: "11:22", who: "Motor BEIQA", what: "ANUN-201 ingresó con 75 de score; sin vetos, pero cobertura de dirección incompleta." }
+      ]
+    },
+    {
+      id: "P-04",
+      ref: "ANUN-204",
+      short: "Foto reutilizada en inmueble lejano",
+      title: "Anuncio en portal masivo con foto reutilizada",
+      verdict: "descartar",
+      score: 46,
+      compared: 6,
+      total: 8,
+      missing: ["fotos", "atributos técnicos"],
+      veto: null,
+      vetoNote: null,
+      a: { role: "Registro A · propiedad", title: "PROP-118", sub: "Bodega en Iztapalapa · Anillo Periférico 4100", meta: "Validada por asesor · 19 feb 2025", verified: true },
+      b: { role: "Registro B · anuncio entrante", title: "ANUN-204", sub: "Bodega en Cuautitlán · sin número publicado", meta: "Portal masivo · 12 mar 2025", verified: false },
+      coverageNote: "Cobertura parcial: 2 señales no se pudieron comparar.",
+      rows: [
+        { field: "Dirección", a: "Anillo Periférico 4100, Iztapalapa", b: "Sin número publicado, Cuautitlán", state: "conflicto" },
+        { field: "Superficie rentable", a: "1,800 m²", b: "1,650 m²", state: "difiere" },
+        { field: "Precio por m²", a: "$120", b: "$128", state: "difiere" },
+        { field: "Tipo", a: "Bodega", b: "Bodega", state: "coincide" },
+        { field: "Actor", a: "Grupo Industrial MX", b: "Portal masivo", state: "difiere" },
+        { field: "Fotos", a: "6 propias", b: "3 reutilizadas de otro inmueble", state: "conflicto" }
+      ],
+      signals: [
+        { name: "Ubicación", pts: 10, max: 25, note: "Zona distinta: Iztapalapa vs Cuautitlán" },
+        { name: "Dirección", pts: 6, max: 20, note: "El anuncio no publica número" },
+        { name: "Superficie rentable", pts: 9, max: 15, note: "1,800 vs 1,650 m², 8% de diferencia" },
+        { name: "Precio por m²", pts: 6, max: 10, note: "$120 vs $128, 6.6% de diferencia" },
+        { name: "Tipo", pts: 10, max: 10, note: "Bodega en ambos" },
+        { name: "Fotos", pts: null, max: 10, note: "3 fotos reutilizadas de un inmueble a 62 km" },
+        { name: "Actor", pts: 5, max: 5, note: "Grupo Industrial MX en los dos" },
+        { name: "Atributos técnicos", pts: null, max: 5, note: "El anuncio no publica ningún atributo técnico" }
+      ],
+      diff: [
+        { field: "Dirección", a: "Anillo Periférico 4100, Iztapalapa", b: "Sin número, Cuautitlán", prec: "Gana el owner verificado", cons: "No hay fusión: el anuncio se descarta y la foto reutilizada queda como evidencia." },
+        { field: "Fotos", a: "6 propias", b: "3 reutilizadas", prec: "Gana el owner verificado", cons: "Las fotos del anuncio no se incorporan al expediente." }
+      ],
+      history: [
+        { time: "11:05", who: "Motor BEIQA", what: "Comparación de fotos: 3 imágenes ya existen en PROP-118." },
+        { time: "11:04", who: "Motor BEIQA", what: "ANUN-204 ingresó con 46 de score y cobertura parcial." }
+      ]
+    },
+    {
+      id: "P-05",
+      ref: "Condesa · sin candidatos",
+      short: "Sin coincidencias en el catálogo",
+      title: "Inmueble nuevo en Condesa",
+      verdict: "sin",
+      score: null,
+      compared: 0,
+      total: 8,
+      empty: true,
+      a: { role: "Registro entrante", title: "A-4502", sub: "Local comercial en Condesa · Av. Ámsterdam 240", meta: "Owner directo · alta guiada · 15 mar 2025", verified: false },
+      history: [
+        { time: "11:44", who: "Motor BEIQA", what: "Búsqueda de candidatos: 0 registros arriba del umbral." },
+        { time: "11:44", who: "Motor BEIQA", what: "El alta pasó a validación del asesor." }
+      ]
+    }
+  ];
+
+  var verdictLabel = { vincular: "Vincular automáticamente", revisar: "Revisar", descartar: "Descartar como duplicado", sin: "Sin coincidencias" };
+  var verdictShort = { vincular: "Vincular", revisar: "Revisar", descartar: "Descartar", sin: "Sin coincidencias" };
+  var verdictClass = { vincular: "seal--vincular", revisar: "seal--revisar", descartar: "seal--descartar", sin: "seal--sin" };
+
+  var state = { selected: "P-01", filter: "todos", decisions: {}, lastAction: null, confirmOpen: false, askOpen: false, reviewed: {} };
+
+  var queueList = document.getElementById("queue-list");
+  var detailBody = document.getElementById("detail-body");
+  var live = document.getElementById("live");
+
+  function say(message) {
+    live.textContent = "";
+    window.setTimeout(function () { live.textContent = message; }, 30);
+  }
+  function prefersReduced() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+  function byId(id) {
+    return CASES.filter(function (c) { return c.id === id; })[0] || null;
+  }
+  function nowTime() {
+    var d = new Date();
+    return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+  }
+  function esc(value) {
+    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  /* Fragmentos construidos desde datos estáticos y escapados: se parsean en un
+     documento inerte y se adoptan como nodos, nunca se inyectan como HTML vivo. */
+  var fragmentParser = new DOMParser();
+  function setHTML(target, html) {
+    var doc = fragmentParser.parseFromString("<!DOCTYPE html><body>" + html + "</body>", "text/html");
+    var fragment = document.createDocumentFragment();
+    while (doc.body.firstChild) {
+      fragment.appendChild(document.adoptNode(doc.body.firstChild));
+    }
+    target.textContent = "";
+    target.appendChild(fragment);
+  }
+
+  /* ---------------- cola ---------------- */
+  function filteredCases() {
+    if (state.filter === "todos") { return CASES; }
+    return CASES.filter(function (c) { return c.verdict === state.filter; });
+  }
+
+  function renderQueue() {
+    var list = filteredCases();
+    queueList.textContent = "";
+    list.forEach(function (c) {
+      var li = document.createElement("li");
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "q-item";
+      button.setAttribute("data-case", c.id);
+      if (c.id === state.selected) { button.setAttribute("aria-current", "true"); }
+      var score = c.score === null ? "—" : String(c.score);
+      setHTML(button,
+        '<span class="q-top"><span class="q-id">Caso ' + esc(c.id.slice(2)) + ' · ' + esc(c.ref) + '</span>' +
+        '<span class="q-score num' + (c.score === null ? " is-none" : "") + '">' + esc(score) + '</span></span>' +
+        '<span class="q-title">' + esc(c.short) + '</span>' +
+        '<span class="q-meta"><span class="seal ' + verdictClass[c.verdict] + '">' + esc(verdictShort[c.verdict]) + '</span>' +
+        (state.decisions[c.id] ? '<span class="q-id">' + esc(state.decisions[c.id].label) + '</span>' : "") + '</span>' +
+        (c.veto
+          ? '<span class="q-veto"><svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true" focusable="false"><path d="M8 2.4v6.2M8 11.4v.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>' + esc(c.veto) + '</span>'
+          : ""));
+      li.appendChild(button);
+      queueList.appendChild(li);
+    });
+    document.getElementById("queue-count").textContent = list.length === 1 ? "1 caso" : list.length + " casos";
+  }
+
+  function counts() {
+    var map = { todos: CASES.length, vincular: 0, revisar: 0, descartar: 0, sin: 0 };
+    CASES.forEach(function (c) { map[c.verdict] += 1; });
+    Object.keys(map).forEach(function (key) {
+      var node = document.getElementById("n-" + key);
+      if (node) { node.textContent = String(map[key]); }
+    });
+  }
+
+  /* ---------------- detalle ---------------- */
+  function renderDetail() {
+    var c = byId(state.selected);
+    if (!c) { return; }
+    var decision = state.decisions[c.id];
+    var html = "";
+
+    html += '<div class="detail-head">';
+    html += '  <div class="dh-crumb">';
+    html += '    <p class="eyebrow">Caso ' + esc(c.id.slice(2)) + ' de ' + CASES.length + ' · comparación de registros</p>';
+    html += '    <div class="dh-nav">' +
+      '<button type="button" class="icon-btn" data-nav="prev"' + (CASES.indexOf(c) === 0 ? " disabled" : "") + '>Anterior</button>' +
+      '<button type="button" class="icon-btn" data-nav="next"' + (CASES.indexOf(c) === CASES.length - 1 ? " disabled" : "") + '>Siguiente</button>' +
+      '</div>';
+    html += '  </div>';
+    html += '  <div class="dh-main">';
+    html += '    <div class="dh-verdict">';
+    html += '      <div class="verdict-line"><span class="seal ' + verdictClass[c.verdict] + ' seal--lg">' + esc(verdictLabel[c.verdict]) + '</span>';
+    html += '      <span class="coverage' + (c.compared < c.total ? " is-partial" : "") + '">' + coverageText(c) + '</span></div>';
+    html += '      <p class="record-sub">' + esc(c.title) + '</p>';
+    html += '    </div>';
+    if (c.score !== null) {
+      html += '    <div class="stamp" aria-label="Score del motor ' + c.score + ' de 100"><span class="stamp-num num">' + c.score + '</span><span class="stamp-of num">/ 100</span><span class="stamp-label">score del motor</span></div>';
+    }
+    html += '  </div>';
+    if (c.veto) {
+      html += '  <div class="veto-band">';
+      html += '    <span class="veto-mark">Veto</span>';
+      html += '    <div><p class="veto-text">' + esc(c.veto) + '</p><p class="veto-note">' + esc(c.vetoNote) + '</p></div>';
+      html += '  </div>';
+    }
+    html += '</div>';
+
+    if (c.empty) {
+      html += emptyDetail(c, decision);
+    } else {
+      html += recordsBlock(c);
+      html += convergenceBlock(c);
+      html += signalsBlock(c);
+      html += diffBlock(c, decision);
+      html += historyBlock(c, decision);
+      html += decisionBlock(c, decision);
+    }
+
+    setHTML(detailBody, html);
+  }
+
+  function coverageText(c) {
+    if (c.empty) { return "Sin candidatos que comparar"; }
+    if (c.compared === c.total) { return "<strong>" + c.total + " de " + c.total + "</strong> señales comparadas"; }
+    var missing = c.missing && c.missing.length ? ": faltan " + c.missing.join(" y ") : "";
+    return "<strong>" + c.compared + " de " + c.total + "</strong>" + esc(missing);
+  }
+
+  function recordsBlock(c) {
+    var html = '<div class="records">';
+    html += recordCell(c.a) + recordCell(c.b);
+    html += '</div>';
+    return html;
+  }
+
+  function recordCell(r) {
+    return '<div class="record">' +
+      '<span class="record-role">' + esc(r.role) + '</span>' +
+      '<span class="record-title">' + esc(r.title) + (r.verified ? '<span class="tag-verified">Verificada</span>' : '') + '</span>' +
+      '<span class="record-sub">' + esc(r.sub) + '</span>' +
+      '<span class="record-meta">' + esc(r.meta) + '</span>' +
+      '</div>';
+  }
+
+  function convergenceBlock(c) {
+    var html = '<section class="section" aria-labelledby="h-conv">';
+    html += '<div class="section-head"><h2 class="section-title" id="h-conv"><span class="section-n">01</span> Convergencia de registros</h2>';
+    html += '<span class="section-note">' + (c.veto ? "La banda marca dónde se separan" : "Cada fila es un campo comparado") + '</span></div>';
+    html += '<div class="conv" role="table" aria-label="Campos comparados entre los dos registros">';
+    c.rows.forEach(function (row) {
+      var stateText = row.state === "coincide" ? "Coincide" : row.state === "difiere" ? "Difiere" : "Conflicto";
+      html += '<div class="conv-row" role="row" style="display:contents">';
+      html += '<div class="conv-cell a" role="cell"><span class="val' + (row.a === "Sin dato" ? " missing" : "") + '">' + esc(row.a) + '</span></div>';
+      html += '<div class="conv-cell mid" role="cell"><span class="conv-field">' + esc(row.field) + '</span><span class="conv-state ' + row.state + '">' + stateText + '</span></div>';
+      html += '<div class="conv-cell b" role="cell"><span class="val' + (row.b === "Sin dato" ? " missing" : "") + '">' + esc(row.b) + '</span></div>';
+      html += '</div>';
+    });
+    html += '</div></section>';
+    return html;
+  }
+
+  function signalsBlock(c) {
+    var html = '<section class="section" aria-labelledby="h-sig">';
+    html += '<div class="section-head"><h2 class="section-title" id="h-sig"><span class="section-n">02</span> Evidencia por señal</h2>';
+    html += '<span class="section-note' + (c.compared < c.total ? " warn" : "") + '">' + coverageText(c) + '</span></div>';
+    html += '<div class="sig">';
+    c.signals.forEach(function (s) {
+      var missing = s.pts === null;
+      var pct = missing ? 0 : Math.round((s.pts / s.max) * 100);
+      var fillClass = missing ? "is-zero" : (pct < 60 ? "is-partial" : "");
+      var ptsLabel = missing ? "sin comparar" : s.pts + " / " + s.max;
+      html += '<div class="sig-row">' +
+        '<span class="sig-name">' + esc(s.name) + '<span class="sr-only">, peso ' + s.max + ' puntos</span></span>' +
+        '<span class="sig-bar"><span class="sig-fill ' + fillClass + '" style="width:' + (missing ? 0 : pct) + '%"></span></span>' +
+        '<span class="sig-pts num' + (missing ? " is-missing" : "") + '">' + esc(ptsLabel) + '</span>' +
+        '<span class="sig-note">' + esc(s.note) + '</span>' +
+        '</div>';
+    });
+    var earned = c.signals.reduce(function (sum, s) { return sum + (s.pts === null ? 0 : s.pts); }, 0);
+    html += '<div class="sig-total"><span>' + (c.compared < c.total ? "Las señales sin comparar no suman al score." : "Suma de puntos de las señales comparadas.") + '</span>';
+    html += '<span class="num"><strong>' + earned + '</strong> / 100</span></div>';
+    html += '</div></section>';
+    return html;
+  }
+
+  function diffBlock(c, decision) {
+    var reviewed = state.reviewed[c.id] === true;
+    var html = '<section class="section" aria-labelledby="h-diff">';
+    html += '<div class="section-head"><h2 class="section-title" id="h-diff"><span class="section-n">03</span> Diferencias campo por campo</h2>';
+    html += '<span class="section-note">Precedencia: gana el owner verificado</span></div>';
+    html += '<div class="diff">';
+    html += '<div class="diff-head"><span>Campo</span><span>Registro A · propiedad</span><span>Registro B · anuncio</span></div>';
+    c.diff.forEach(function (d) {
+      html += '<div class="diff-row">' +
+        '<span class="diff-field">' + esc(d.field) + '</span>' +
+        '<div class="diff-values"><span class="a' + (d.add ? " empty" : "") + '">' + esc(d.a) + '</span></div>' +
+        '<div class="diff-rule"><span class="prec' + (d.precOpen ? " is-open" : "") + '">' + esc(d.prec) + '</span>' +
+        '<span class="cons' + (d.loss ? " is-loss" : "") + '">' + esc(d.cons) + '</span></div>' +
+        '</div>';
+    });
+    html += '</div>';
+    if (c.verdict !== "descartar") {
+      html += '<label class="check-row"><input type="checkbox" data-review' + (reviewed ? " checked" : "") + '>' +
+        '<span><strong>Revisé cada diferencia.</strong> Habilita «Fusionar»; vincular el anuncio no requiere este paso.</span></label>';
+    }
+    html += '</section>';
+    return html;
+  }
+
+  function historyBlock(c, decision) {
+    var html = '<section class="section" aria-labelledby="h-hist">';
+    html += '<div class="section-head"><h2 class="section-title" id="h-hist"><span class="section-n">04</span> Historial de decisiones</h2>';
+    html += '<span class="section-note">Hora, quién y por qué</span></div>';
+    html += '<div class="history">';
+    if (decision) {
+      html += '<div class="h-row"><span class="h-time">' + esc(decision.time) + '</span><span class="h-who">Tú</span><span class="h-what">' + esc(decision.log) + '</span></div>';
+    }
+    c.history.forEach(function (h) {
+      html += '<div class="h-row"><span class="h-time">' + esc(h.time) + '</span><span class="h-who">' + esc(h.who) + '</span><span class="h-what">' + esc(h.what) + (h.note ? ' <em>' + esc(h.note) + '</em>' : '') + '</span></div>';
+    });
+    html += '</div></section>';
+    return html;
+  }
+
+  function decisionBlock(c, decision) {
+    var html = '<section class="decision" aria-labelledby="h-dec">';
+    html += '<div class="decision-state" id="decision-live" aria-live="polite">';
+    html += '<span class="state-mark' + (decision ? " is-done" : (c.veto ? " is-veto" : " is-review")) + '">' + (decision ? "Decidido" : "Pendiente") + '</span>';
+    html += '<span id="h-dec">' + (decision ? esc(decision.sentence) : (c.veto ? "El veto impide vincular sin revisión." : "Sin decisión del revisor.")) + '</span>';
+    html += '</div>';
+
+    html += '<div class="decision-actions">';
+    html += '<button type="button" class="btn btn--primary" data-action="vincular"' + (decision ? " disabled" : "") + '>Vincular</button>';
+    html += '<button type="button" class="btn" data-action="fusionar"' + (state.reviewed[c.id] && !decision ? "" : " disabled") + '>Fusionar</button>';
+    html += '<button type="button" class="btn" data-action="distinto"' + (decision ? " disabled" : "") + '>Marcar distinto</button>';
+    html += '<button type="button" class="btn" data-action="pedir"' + (decision ? " disabled" : "") + '>Pedir datos</button>';
+    html += '<span class="spacer"></span>';
+    html += '<button type="button" class="btn btn--quiet" data-action="deshacer"' + (state.lastAction && state.lastAction.caseId === c.id ? "" : " disabled") + '>Deshacer</button>';
+    html += '</div>';
+
+    if (!state.reviewed[c.id] && !decision) {
+      html += '<p class="error-line" id="review-hint">Para fusionar, primero marca las diferencias como revisadas.</p>';
+    }
+    if (state.confirmOpen && c.id === state.selected) {
+      var losses = c.diff.filter(function (d) { return d.loss; }).map(function (d) { return d.field.toLowerCase(); });
+      html += '<div class="confirm" role="group" aria-label="Confirmar fusión">';
+      html += '<p class="confirm-text"><strong>Vas a fusionar los dos registros.</strong> Se conservan los datos del owner verificado' +
+        (losses.length ? " y se pierden: " + esc(losses.join(", ")) + "." : ".") + ' Esta acción se puede deshacer durante esta sesión.</p>';
+      html += '<div class="confirm-actions"><button type="button" class="btn btn--danger" data-action="fusionar-confirm">Confirmar fusión</button>' +
+        '<button type="button" class="btn" data-action="fusionar-cancel">Cancelar</button></div></div>';
+    }
+    if (state.askOpen && c.id === state.selected) {
+      html += '<div class="ask" role="group" aria-label="Pedir datos al owner">';
+      html += '<label for="ask-text">¿Qué dato le pedimos al owner?</label>';
+      html += '<textarea id="ask-text" placeholder="Ej.: confirma la altura libre y los cajones de estacionamiento"></textarea>';
+      html += '<p class="error-line" id="ask-error" hidden>Escribe qué dato falta antes de enviar la solicitud.</p>';
+      html += '<div class="confirm-actions"><button type="button" class="btn btn--primary" data-action="pedir-send">Enviar solicitud</button>' +
+        '<button type="button" class="btn" data-action="pedir-cancel">Cancelar</button></div></div>';
+    }
+    html += '</section>';
+    return html;
+  }
+
+  function emptyDetail(c, decision) {
+    var html = '<section class="empty">';
+    html += '<span class="seal seal--sin seal--lg">Sin coincidencias</span>';
+    html += '<h2>Sin coincidencias, pasa a validación del asesor</h2>';
+    html += '<p>El motor comparó <strong>' + esc(c.a.sub) + '</strong> contra el catálogo y ningún registro llegó al umbral. No hay evidencia suficiente para hablar de duplicado: el alta sigue su curso como inmueble nuevo.</p>';
+    html += '<ul class="empty-list">';
+    html += '<li><span class="empty-n num">1</span><span>Ningún registro superó 60 puntos de similitud.</span></li>';
+    html += '<li><span class="empty-n num">2</span><span>Sin candidatos no hay señales que comparar, así que no se muestra cobertura ni diff.</span></li>';
+    html += '<li><span class="empty-n num">3</span><span>Pasa a validación del asesor con las fotos y los datos del alta guiada.</span></li>';
+    html += '</ul>';
+    html += '<div class="decision-actions" style="margin-top:10px">';
+    html += '<button type="button" class="btn btn--primary" data-action="validar"' + (decision ? " disabled" : "") + '>Enviar a validación del asesor</button>';
+    html += '<button type="button" class="btn" data-action="descartar-anuncio"' + (decision ? " disabled" : "") + '>Descartar anuncio</button>';
+    html += '<button type="button" class="btn btn--quiet" data-action="deshacer"' + (state.lastAction && state.lastAction.caseId === c.id ? "" : " disabled") + '>Deshacer</button>';
+    html += '</div>';
+    if (decision) {
+      html += '<p class="cons" style="margin-top:8px"><strong>Decisión:</strong> ' + esc(decision.sentence) + '</p>';
+    }
+    html += '</section>';
+    html += historyBlock(c, decision);
+    return html;
+  }
+
+  /* ---------------- acciones ---------------- */
+  function setDecision(c, type, label, sentence, log) {
+    state.decisions[c.id] = { type: type, label: label, sentence: sentence, log: log, time: nowTime() };
+    state.lastAction = { caseId: c.id, type: type };
+    state.confirmOpen = false;
+    state.askOpen = false;
+    renderDetail();
+    renderQueue();
+  }
+
+  function act(c, action) {
+    if (action === "vincular") {
+      setDecision(c, "vinculado", "Vinculado",
+        "Anuncio vinculado a " + c.a.title + ". La propiedad no cambió: se adjuntó la observación con su fuente y su fecha.",
+        "Vinculó el anuncio " + c.b.title + " a " + c.a.title + ". Motivo: evidencia suficiente sin conflicto de entidad.");
+      say("Anuncio vinculado a " + c.a.title + ". Se puede deshacer.");
+      return;
+    }
+    if (action === "fusionar") {
+      if (!state.reviewed[c.id]) {
+        say("Marca primero las diferencias como revisadas.");
+        return;
+      }
+      state.confirmOpen = true;
+      renderDetail();
+      var confirmButton = detailBody.querySelector('[data-action="fusionar-confirm"]');
+      if (confirmButton) { confirmButton.focus(); }
+      return;
+    }
+    if (action === "fusionar-confirm") {
+      setDecision(c, "fusionado", "Fusionado",
+        "Registros fusionados en " + c.a.title + ". Los valores del owner verificado ganaron y las diferencias quedaron en el expediente.",
+        "Fusionó " + c.a.title + " con " + c.b.title + ". Motivo: vio las " + c.diff.length + " diferencias y confirmó.");
+      say("Registros fusionados. Se puede deshacer.");
+      return;
+    }
+    if (action === "fusionar-cancel") {
+      state.confirmOpen = false;
+      renderDetail();
+      say("Fusión cancelada.");
+      return;
+    }
+    if (action === "distinto") {
+      setDecision(c, "distinto", "Entidades distintas",
+        "Marcados como entidades distintas. Los dos registros siguen existiendo y el caso sale de la cola.",
+        "Marcó los registros como distintos. Motivo: la diferencia es real, no un duplicado.");
+      say("Marcados como entidades distintas.");
+      return;
+    }
+    if (action === "pedir") {
+      state.askOpen = true;
+      renderDetail();
+      var field = document.getElementById("ask-text");
+      if (field) { field.focus(); }
+      return;
+    }
+    if (action === "pedir-send") {
+      var text = document.getElementById("ask-text");
+      var error = document.getElementById("ask-error");
+      if (!text || text.value.trim().length < 4) {
+        if (error) { error.hidden = false; }
+        if (text) { text.focus(); }
+        say("Escribe qué dato falta.");
+        return;
+      }
+      var reason = text.value.trim();
+      setDecision(c, "pedido", "Datos solicitados",
+        "Solicitud enviada al owner: «" + reason + "». El caso espera respuesta y no se decide por ahora.",
+        "Pidió datos al owner: " + reason);
+      say("Solicitud enviada al owner.");
+      return;
+    }
+    if (action === "pedir-cancel") {
+      state.askOpen = false;
+      renderDetail();
+      return;
+    }
+    if (action === "deshacer") {
+      if (state.lastAction && state.lastAction.caseId === c.id) {
+        delete state.decisions[c.id];
+        state.lastAction = null;
+        state.confirmOpen = false;
+        state.askOpen = false;
+        renderDetail();
+        renderQueue();
+        say("Decisión deshecha. El caso vuelve a estar pendiente.");
+      }
+      return;
+    }
+    if (action === "validar") {
+      setDecision(c, "validacion", "En validación",
+        "Enviado a validación del asesor. Sin coincidencias, el alta sigue como inmueble nuevo.",
+        "Envió el alta a validación del asesor. Motivo: sin candidatos en el catálogo.");
+      say("Enviado a validación del asesor.");
+      return;
+    }
+    if (action === "descartar-anuncio") {
+      setDecision(c, "descartado", "Anuncio descartado",
+        "Anuncio descartado. El alta del inmueble se conserva para validación del asesor.",
+        "Descartó el anuncio. Motivo: sin datos suficientes para compararlo.");
+      say("Anuncio descartado.");
+    }
+  }
+
+  /* ---------------- eventos ---------------- */
+  queueList.addEventListener("click", function (event) {
+    var button = event.target.closest("[data-case]");
+    if (!button) { return; }
+    state.selected = button.getAttribute("data-case");
+    state.confirmOpen = false;
+    state.askOpen = false;
+    renderQueue();
+    renderDetail();
+    var c = byId(state.selected);
+    say("Caso " + c.id + " seleccionado: " + verdictLabel[c.verdict] + ".");
+    var detail = document.getElementById("detalle");
+    if (window.innerWidth <= 980) { detail.focus(); }
+  });
+
+  document.getElementById("filters").addEventListener("click", function (event) {
+    var button = event.target.closest("[data-filter]");
+    if (!button) { return; }
+    state.filter = button.getAttribute("data-filter");
+    Array.prototype.forEach.call(document.querySelectorAll("[data-filter]"), function (node) {
+      node.setAttribute("aria-pressed", node === button ? "true" : "false");
+    });
+    var list = filteredCases();
+    if (list.length && !list.some(function (c) { return c.id === state.selected; })) {
+      state.selected = list[0].id;
+      renderDetail();
+    }
+    renderQueue();
+    say("Filtro aplicado: " + button.textContent.trim() + ".");
+  });
+
+  detailBody.addEventListener("click", function (event) {
+    var nav = event.target.closest("[data-nav]");
+    if (nav) {
+      var index = CASES.indexOf(byId(state.selected));
+      var next = nav.getAttribute("data-nav") === "next" ? index + 1 : index - 1;
+      if (next >= 0 && next < CASES.length) {
+        state.selected = CASES[next].id;
+        state.confirmOpen = false;
+        state.askOpen = false;
+        renderQueue();
+        renderDetail();
+        say("Caso " + state.selected + " seleccionado.");
+      }
+      return;
+    }
+    var actionButton = event.target.closest("[data-action]");
+    if (!actionButton) { return; }
+    var c = byId(state.selected);
+    if (!c) { return; }
+    act(c, actionButton.getAttribute("data-action"));
+  });
+
+  detailBody.addEventListener("change", function (event) {
+    var box = event.target.closest("[data-review]");
+    if (!box) { return; }
+    state.reviewed[state.selected] = box.checked;
+    renderDetail();
+    say(box.checked ? "Diferencias marcadas como revisadas. Fusionar está disponible." : "Diferencias sin revisar. Fusionar vuelve a estar bloqueado.");
+  });
+
+  counts();
+  renderQueue();
+  renderDetail();
+})();
+</script>
+</body>
+</html>

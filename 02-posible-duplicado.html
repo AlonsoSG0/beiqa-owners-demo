@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Posible duplicado · BEIQA Owners</title>
+<style>
+:root{
+  --paper:#F7F5F0;
+  --paper-raised:#FBFAF7;
+  --paper-sunken:#EFEBE2;
+  --ink:#121A24;
+  --ink-2:#33404F;
+  --ink-3:#5C6876;
+  --rule:#DAD4C8;
+  --rule-strong:#BDB5A5;
+
+  --v-link:#2F6B4F;  --v-link-bg:#E8EFE8;  --v-link-line:#B2C9B6;
+  --v-review:#8C5A0C; --v-review-bg:#F5E9D2; --v-review-line:#D8BE8C;
+  --v-discard:#4A5561; --v-discard-bg:#E8E8E5; --v-discard-line:#C2C5C2;
+  --veto:#A32020; --veto-bg:#F8E6E3; --veto-line:#DDB4AC;
+
+  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-doc:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px;
+  --s-7:32px; --s-8:40px; --s-9:56px; --s-10:72px;
+  --r-1:2px; --r-2:3px; --r-3:4px;
+  --dur-in:200ms; --dur-out:140ms; --ease:cubic-bezier(.23,1,.32,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:15px;line-height:1.55;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;line-height:1.2;font-weight:650;letter-spacing:-.01em}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:var(--r-1)}
+[hidden]{display:none !important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:8px;z-index:60;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:var(--r-2);text-decoration:none;font-weight:600}
+.skip:focus{left:16px}
+.num{font-variant-numeric:tabular-nums}
+
+.topbar{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--rule)}
+.topbar-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:var(--s-6);padding:0 var(--s-6);height:60px}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand-mark{font-size:15px;font-weight:700;letter-spacing:.2em}
+.brand-sub{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-link{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid transparent;border-radius:var(--r-1);text-decoration:none;font-size:13px;font-weight:550;color:var(--ink-2);white-space:nowrap;transition:background var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.nav-link:hover{background:var(--paper-sunken);color:var(--ink)}
+.nav-link[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.nav-link[aria-current="page"]:hover{background:var(--ink);color:var(--paper)}
+.nav-n{font-size:10.5px;letter-spacing:.08em;opacity:.72}
+
+.page{max-width:1080px;margin:0 auto;padding:var(--s-8) var(--s-7) var(--s-10)}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-7);padding-bottom:var(--s-6);border-bottom:1px solid var(--rule-strong)}
+.eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.page-title{font-family:var(--font-doc);font-size:clamp(28px,3.4vw,38px);font-weight:600;letter-spacing:-.015em;margin-top:10px}
+.page-lede{margin-top:var(--s-3);max-width:64ch;color:var(--ink-2);font-size:16px;line-height:1.6}
+.folio{flex:none;text-align:right;font-size:12px;color:var(--ink-3);line-height:1.5}
+.folio strong{display:block;color:var(--ink);font-size:13px;letter-spacing:.04em}
+
+/* registro propio */
+.own{margin-top:var(--s-6);display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s-4);align-items:start;padding:var(--s-4) 0;border-bottom:1px solid var(--rule)}
+.own-label{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-3);padding-top:3px;white-space:nowrap}
+.own-body{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline}
+.own-title{font-size:15px;font-weight:650;width:100%}
+.own-data{display:flex;flex-wrap:wrap;gap:6px 20px}
+.datum{display:flex;align-items:baseline;gap:6px;font-size:13.5px}
+.datum dt{color:var(--ink-3);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.datum dd{margin:0;font-weight:600}
+
+/* candidatos */
+.candidates{margin-top:var(--s-7)}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);padding-bottom:var(--s-3);border-bottom:1px solid var(--rule)}
+.section-title{font-size:16px;font-weight:650}
+.section-note{font-size:12.5px;color:var(--ink-3)}
+.cand-list{display:grid;gap:var(--s-3);margin-top:var(--s-4)}
+.cand{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s-4);padding:var(--s-4) var(--s-5);border:1px solid var(--rule-strong);border-radius:var(--r-3);background:var(--paper-raised);cursor:pointer;transition:border-color var(--dur-in) var(--ease),box-shadow var(--dur-in) var(--ease)}
+.cand:hover{border-color:var(--ink-3)}
+.cand:has(input:checked){border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.cand input{margin:4px 0 0;width:17px;height:17px;accent-color:var(--ink)}
+.cand-body{display:grid;gap:10px;min-width:0}
+.cand-top{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap}
+.cand-title{font-size:16px;font-weight:650}
+.cand-addr{font-size:13.5px;color:var(--ink-2)}
+.cand-figures{display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-5)}
+.fig{display:grid;gap:1px}
+.fig-k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.fig-v{font-size:14.5px;font-weight:650}
+.reason{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;color:var(--ink-2);padding-top:10px;border-top:1px solid var(--rule)}
+.reason svg{flex:none;margin-top:2px;color:var(--ink-3)}
+.cand-badge{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--v-review);background:var(--v-review-bg);border:1px solid var(--v-review-line);border-radius:var(--r-1);padding:2px 7px;white-space:nowrap}
+
+/* acciones */
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3);margin-top:var(--s-6);padding-top:var(--s-5);border-top:1px solid var(--rule)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 var(--s-5);border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper-raised);color:var(--ink);font-size:14.5px;font-weight:600;text-decoration:none;cursor:pointer;transition:background var(--dur-in) var(--ease),border-color var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.btn:hover{background:var(--paper-sunken);border-color:var(--ink-3)}
+.btn--primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn--primary:hover{background:#1D2937;border-color:#1D2937;color:var(--paper)}
+.btn--quiet{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn--quiet:hover{background:var(--paper-sunken);color:var(--ink)}
+.btn--link{min-height:0;padding:0;border:0;background:none;text-decoration:underline;text-underline-offset:3px}
+.actions-spacer{margin-left:auto}
+
+.alert{border:1px solid var(--veto-line);background:var(--veto-bg);border-radius:var(--r-2);padding:var(--s-3) var(--s-4);margin-top:var(--s-4);font-size:13.5px;color:var(--veto);font-weight:600}
+
+/* banda de estado */
+.status{margin-top:var(--s-6);border:1px solid var(--rule-strong);border-left-width:3px;border-radius:var(--r-2);background:var(--paper-raised);padding:var(--s-5) var(--s-5)}
+.status--review{border-left-color:var(--v-review)}
+.status--link{border-left-color:var(--v-link)}
+.status-head{display:flex;align-items:baseline;gap:var(--s-3);flex-wrap:wrap}
+.status-mark{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.status--review .status-mark{color:var(--v-review)}
+.status--link .status-mark{color:var(--v-link)}
+.status-title{font-size:18px;font-weight:650}
+.status-text{margin-top:8px;font-size:14px;color:var(--ink-2);max-width:66ch}
+.status-steps{margin-top:var(--s-3);display:grid;gap:6px;font-size:13.5px;color:var(--ink-2)}
+.status-steps li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.status-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3);margin-top:var(--s-4);padding-top:var(--s-3);border-top:1px solid var(--rule)}
+
+.note{margin-top:var(--s-6);display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--ink-3);max-width:76ch}
+.note svg{flex:none;margin-top:2px}
+.foot{margin-top:var(--s-7);padding-top:var(--s-4);border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);display:flex;gap:var(--s-4);flex-wrap:wrap}
+
+@media (max-width:860px){
+  .topbar-inner{flex-wrap:wrap;height:auto;padding:10px var(--s-4);gap:10px}
+  .nav{margin-left:0;width:100%}
+  .page{padding:var(--s-6) var(--s-4) var(--s-9)}
+  .page-head{flex-direction:column;gap:var(--s-3)}
+  .folio{text-align:left}
+  .own{grid-template-columns:1fr;gap:6px}
+  .cand{padding:var(--s-4)}
+  .actions .btn{flex:1 1 100%}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:1ms !important;animation-duration:1ms !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">BEIQA</span>
+      <span class="brand-sub">Owners · México</span>
+    </div>
+    <nav class="nav" aria-label="Flujo del prototipo">
+      <a class="nav-link" href="01-alta-owner.html"><span class="nav-n">01</span> Alta del owner</a>
+      <a class="nav-link" href="02-posible-duplicado.html" aria-current="page"><span class="nav-n">02</span> Posible duplicado</a>
+      <a class="nav-link" href="03-revisor.html"><span class="nav-n">03</span> Revisor</a>
+      <a class="nav-link" href="04-panel-owner.html"><span class="nav-n">04</span> Panel del owner</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido" class="page">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">Antes de publicar</p>
+      <h1 class="page-title">Este inmueble podría ya existir</h1>
+      <p class="page-lede">No es un error: es una confirmación. Compara estos registros con el inmueble que estás dando de alta. Si es el mismo, lo reclamamos y se actualiza un solo expediente en lugar de abrir dos.</p>
+    </div>
+    <p class="folio"><strong>Exp. AL-2481</strong>2 coincidencias<br><span class="num">15 mar 2025</span></p>
+  </div>
+
+  <section class="own" aria-labelledby="h-own">
+    <p class="own-label" id="h-own">Lo que registraste</p>
+    <div class="own-body">
+      <p class="own-title">Oficina en Polanco</p>
+      <dl class="own-data">
+        <div class="datum"><dt>Dirección</dt><dd>Av. Horacio 1850, Polanco</dd></div>
+        <div class="datum"><dt>Superficie</dt><dd class="num">420 m²</dd></div>
+        <div class="datum"><dt>Precio</dt><dd class="num">$520 / m²</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <p id="live" class="sr-only" role="status" aria-live="polite"></p>
+
+  <section class="candidates" id="candidates-block" aria-labelledby="h-cand">
+    <div class="section-head">
+      <h2 class="section-title" id="h-cand">Registros parecidos</h2>
+      <span class="section-note">2 registros · elige el que sea tu inmueble</span>
+    </div>
+
+    <fieldset style="border:0;padding:0;margin:0">
+      <legend class="sr-only">Elige cuál de los registros es tu inmueble</legend>
+      <div class="cand-list">
+        <label class="cand">
+          <input type="radio" name="candidato" value="c-1850-p4">
+          <span class="cand-body">
+            <span class="cand-top">
+              <span>
+                <span class="cand-title">Oficina en Polanco, piso 4</span>
+                <span class="cand-addr" style="display:block">Av. Horacio 1850, Polanco</span>
+              </span>
+              <span class="cand-badge">Coincidencia alta</span>
+            </span>
+            <span class="cand-figures">
+              <span class="fig"><span class="fig-k">Superficie</span><span class="fig-v num">420 m²</span></span>
+              <span class="fig"><span class="fig-k">Precio</span><span class="fig-v num">$520 / m²</span></span>
+              <span class="fig"><span class="fig-k">Piso</span><span class="fig-v num">4</span></span>
+            </span>
+            <span class="reason">
+              <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path d="M2.5 8.6l3.4 3.3 7.6-8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Coinciden el predio y la superficie en 5%.</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="cand">
+          <input type="radio" name="candidato" value="c-1850-p6">
+          <span class="cand-body">
+            <span class="cand-top">
+              <span>
+                <span class="cand-title">Oficina en Polanco, piso 6</span>
+                <span class="cand-addr" style="display:block">Av. Horacio 1850, Polanco</span>
+              </span>
+              <span class="cand-badge">Coincidencia parcial</span>
+            </span>
+            <span class="cand-figures">
+              <span class="fig"><span class="fig-k">Superficie</span><span class="fig-v num">400 m²</span></span>
+              <span class="fig"><span class="fig-k">Precio</span><span class="fig-v num">$540 / m²</span></span>
+              <span class="fig"><span class="fig-k">Piso</span><span class="fig-v num">6</span></span>
+            </span>
+            <span class="reason">
+              <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path d="M8 2.2v6.4M8 11.9v.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <span>Coinciden el predio y la administradora; el piso es distinto (6 frente a 4).</span>
+            </span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <p class="alert" id="claim-error" hidden>Elige cuál de los registros es tu inmueble antes de reclamarlo.</p>
+
+    <div class="actions" id="decision-actions">
+      <button type="button" class="btn btn--primary" id="btn-claim">Sí, es mi inmueble — reclamarlo</button>
+      <button type="button" class="btn" id="btn-not-mine">No es el mío — continuar</button>
+      <span class="actions-spacer"></span>
+      <a class="btn btn--quiet" href="01-alta-owner.html">Volver al alta</a>
+    </div>
+  </section>
+
+  <section class="status status--review" id="status-claim" hidden aria-labelledby="h-claim">
+    <div class="status-head">
+      <span class="status-mark">En verificación</span>
+      <h2 class="status-title" id="h-claim">Reclamo en verificación</h2>
+    </div>
+    <p class="status-text" id="claim-detail">Reclamaste <strong>Oficina en Polanco, piso 4 · Av. Horacio 1850</strong>. Un asesor de BEIQA confirma la titularidad con tu contacto antes de publicar; normalmente toma un día hábil.</p>
+    <ul class="status-steps">
+      <li><span class="num" aria-hidden="true">1</span><span>Confirmamos que el inmueble es tuyo con el contacto registrado.</span></li>
+      <li><span class="num" aria-hidden="true">2</span><span>El expediente se actualiza con tus datos; no se abre uno nuevo.</span></li>
+      <li><span class="num" aria-hidden="true">3</span><span>Cuando queda validado, entra a los shortlists de inquilinos corporativos.</span></li>
+    </ul>
+    <div class="status-actions">
+      <button type="button" class="btn" id="undo-claim">Deshacer reclamo</button>
+      <a class="btn btn--quiet" href="04-panel-owner.html">Ver el panel del owner</a>
+    </div>
+  </section>
+
+  <section class="status status--link" id="status-new" hidden aria-labelledby="h-new">
+    <div class="status-head">
+      <span class="status-mark">Validación</span>
+      <h2 class="status-title" id="h-new">Pasa a validación del asesor</h2>
+    </div>
+    <p class="status-text">Quedas como registro nuevo de <strong>Oficina en Polanco · Av. Horacio 1850</strong>. Un asesor de BEIQA confirma los datos y descarta la coincidencia antes de publicar; te escribimos si encuentra algo que aclarar.</p>
+    <ul class="status-steps">
+      <li><span class="num" aria-hidden="true">1</span><span>El asesor revisa la coincidencia que descartaste y tu expediente.</span></li>
+      <li><span class="num" aria-hidden="true">2</span><span>Si aparece otra coincidencia, te la mostramos antes de fusionar.</span></li>
+      <li><span class="num" aria-hidden="true">3</span><span>Publicado el inmueble, empieza a recibir solicitudes en tu panel.</span></li>
+    </ul>
+    <div class="status-actions">
+      <button type="button" class="btn" id="undo-new">Deshacer</button>
+      <a class="btn btn--quiet" href="04-panel-owner.html">Ver el panel del owner</a>
+    </div>
+  </section>
+
+  <p class="note">
+    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4M8 4.9v.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span>Estos registros son de dominio público. Nunca mostramos datos internos del catálogo ni información de nuestros clientes: si en algún momento ves un dato de más, es un error de nuestra parte.</span>
+  </p>
+
+  <p class="foot">
+    <span>BEIQA · Consultoría de inquilinos corporativos</span>
+    <span>Prototipo de trabajo · datos de ejemplo</span>
+  </p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var live = document.getElementById("live");
+  var radios = Array.prototype.slice.call(document.querySelectorAll('input[name="candidato"]'));
+  var claim = document.getElementById("btn-claim");
+  var notMine = document.getElementById("btn-not-mine");
+  var claimError = document.getElementById("claim-error");
+  var actions = document.getElementById("decision-actions");
+  var statusClaim = document.getElementById("status-claim");
+  var statusNew = document.getElementById("status-new");
+  var claimDetail = document.getElementById("claim-detail");
+  var candidatesBlock = document.getElementById("candidates-block");
+
+  var labels = {
+    "c-1850-p4": "Oficina en Polanco, piso 4 · Av. Horacio 1850",
+    "c-1850-p6": "Oficina en Polanco, piso 6 · Av. Horacio 1850"
+  };
+
+  function say(message) {
+    live.textContent = "";
+    window.setTimeout(function () { live.textContent = message; }, 30);
+  }
+
+  function selected() {
+    var found = radios.filter(function (radio) { return radio.checked; })[0];
+    return found ? found.value : null;
+  }
+
+  function showStatus(which) {
+    statusClaim.hidden = which !== "claim";
+    statusNew.hidden = which !== "new";
+    candidatesBlock.hidden = which !== null;
+    claimError.hidden = true;
+    var heading = which === "claim" ? document.getElementById("h-claim") : document.getElementById("h-new");
+    if (which && heading) {
+      heading.setAttribute("tabindex", "-1");
+      heading.focus();
+    }
+    if (which) {
+      window.scrollTo({ top: 0, behavior: prefersReduced() ? "auto" : "smooth" });
+    }
+  }
+
+  function prefersReduced() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  radios.forEach(function (radio) {
+    radio.addEventListener("change", function () {
+      claimError.hidden = true;
+    });
+  });
+
+  claim.addEventListener("click", function () {
+    var value = selected();
+    if (!value) {
+      claimError.hidden = false;
+      say("Falta elegir cuál registro es tu inmueble.");
+      if (radios[0]) { radios[0].focus(); }
+      return;
+    }
+    claimDetail.textContent = "";
+    claimDetail.append("Reclamaste ");
+    var strong = document.createElement("strong");
+    strong.textContent = labels[value];
+    claimDetail.append(strong, ". Un asesor de BEIQA confirma la titularidad con tu contacto antes de publicar; normalmente toma un día hábil.");
+    showStatus("claim");
+    say("Reclamo en verificación para " + labels[value] + ".");
+  });
+
+  notMine.addEventListener("click", function () {
+    showStatus("new");
+    say("El inmueble pasa a validación del asesor.");
+  });
+
+  document.getElementById("undo-claim").addEventListener("click", function () {
+    showStatus(null);
+    actions.hidden = false;
+    say("Reclamo deshecho. Vuelves a elegir.");
+    var first = radios[0];
+    if (first) { first.focus(); }
+  });
+
+  document.getElementById("undo-new").addEventListener("click", function () {
+    showStatus(null);
+    actions.hidden = false;
+    say("Deshecho. El inmueble queda otra vez en la comparación.");
+    var first = radios[0];
+    if (first) { first.focus(); }
+  });
+})();
+</script>
+</body>
+</html>

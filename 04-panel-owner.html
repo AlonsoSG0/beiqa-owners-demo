@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel del owner · BEIQA Owners</title>
+<style>
+:root{
+  --paper:#F7F5F0;
+  --paper-raised:#FBFAF7;
+  --paper-sunken:#EFEBE2;
+  --ink:#121A24;
+  --ink-2:#33404F;
+  --ink-3:#5C6876;
+  --rule:#DAD4C8;
+  --rule-strong:#BDB5A5;
+
+  --v-link:#2F6B4F;  --v-link-bg:#E8EFE8;  --v-link-line:#B2C9B6;
+  --v-review:#8C5A0C; --v-review-bg:#F5E9D2; --v-review-line:#D8BE8C;
+  --v-discard:#4A5561; --v-discard-bg:#E8E8E5; --v-discard-line:#C2C5C2;
+  --veto:#A32020; --veto-bg:#F8E6E3; --veto-line:#DDB4AC;
+
+  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-doc:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px;
+  --s-7:32px; --s-8:40px; --s-9:56px; --s-10:72px;
+  --r-1:2px; --r-2:3px; --r-3:4px;
+  --dur-in:200ms; --dur-out:140ms; --ease:cubic-bezier(.23,1,.32,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui);font-size:15px;line-height:1.55;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;line-height:1.2;font-weight:650;letter-spacing:-.01em}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:var(--r-1)}
+[hidden]{display:none !important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:8px;z-index:60;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:var(--r-2);text-decoration:none;font-weight:600}
+.skip:focus{left:16px}
+.num{font-variant-numeric:tabular-nums}
+
+.topbar{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--rule)}
+.topbar-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:var(--s-6);padding:0 var(--s-6);height:60px}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand-mark{font-size:15px;font-weight:700;letter-spacing:.2em}
+.brand-sub{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-link{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid transparent;border-radius:var(--r-1);text-decoration:none;font-size:13px;font-weight:550;color:var(--ink-2);white-space:nowrap;transition:background var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.nav-link:hover{background:var(--paper-sunken);color:var(--ink)}
+.nav-link[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.nav-link[aria-current="page"]:hover{background:var(--ink);color:var(--paper)}
+.nav-n{font-size:10.5px;letter-spacing:.08em;opacity:.72}
+
+.page{max-width:1080px;margin:0 auto;padding:var(--s-8) var(--s-7) var(--s-10)}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-7);padding-bottom:var(--s-6);border-bottom:1px solid var(--rule-strong)}
+.eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.page-title{font-family:var(--font-doc);font-size:clamp(28px,3.4vw,38px);font-weight:600;letter-spacing:-.015em;margin-top:10px}
+.page-lede{margin-top:var(--s-3);max-width:64ch;color:var(--ink-2);font-size:16px;line-height:1.6}
+.folio{flex:none;text-align:right;font-size:12px;color:var(--ink-3);line-height:1.5}
+.folio strong{display:block;color:var(--ink);font-size:13px;letter-spacing:.04em}
+
+.privacy{display:flex;gap:10px;align-items:flex-start;margin-top:var(--s-5);padding:var(--s-3) var(--s-4);border:1px solid var(--rule-strong);border-left-width:2px;border-radius:var(--r-2);background:var(--paper-raised);font-size:13px;color:var(--ink-2);max-width:78ch}
+.privacy svg{flex:none;margin-top:2px;color:var(--ink-3)}
+.privacy strong{color:var(--ink)}
+
+.strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:var(--s-7);border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong)}
+.strip-item{padding:var(--s-4) var(--s-4) var(--s-4) 0;border-right:1px solid var(--rule);display:grid;gap:2px;align-content:start}
+.strip-item:last-child{border-right:0}
+.strip-item + .strip-item{padding-left:var(--s-5)}
+.strip-k{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.strip-v{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.1;margin-top:4px}
+.strip-v .of{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:0}
+.strip-note{font-size:12.5px;color:var(--ink-3)}
+
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-6);margin-top:var(--s-7)}
+@media (max-width:900px){.grid-2{grid-template-columns:1fr}}
+
+.block{border:1px solid var(--rule);border-radius:var(--r-3);background:var(--paper-raised);display:grid;align-content:start}
+.block-head{padding:var(--s-4) var(--s-5) var(--s-3);border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-3)}
+.block-title{font-size:15px;font-weight:650}
+.block-note{font-size:11.5px;color:var(--ink-3);text-align:right}
+.block-body{padding:var(--s-2) 0}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s-3) var(--s-4);align-items:baseline;padding:var(--s-3) var(--s-5);border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:0}
+.row-main{display:grid;gap:2px;min-width:0}
+.row-title{font-size:14px;font-weight:600}
+.row-sub{font-size:12.5px;color:var(--ink-3)}
+.row-value{font-size:15px;font-weight:700;text-align:right;white-space:nowrap}
+.row-value.is-range{color:var(--ink)}
+.row-flag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--v-review);border:1px solid var(--v-review-line);background:var(--v-review-bg);border-radius:var(--r-1);padding:1px 6px;justify-self:end}
+.row-flag.is-link{color:var(--v-link);border-color:var(--v-link-line);background:var(--v-link-bg)}
+.row-flag.is-quiet{color:var(--ink-2);border-color:var(--rule-strong);background:var(--paper-sunken)}
+.meter{height:5px;background:var(--paper-sunken);border-radius:3px;overflow:hidden;margin-top:7px;border:1px solid var(--rule)}
+.meter i{display:block;height:100%;background:var(--ink-3)}
+
+.requests{margin-top:var(--s-7)}
+.req{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s-3) var(--s-5);align-items:start;padding:var(--s-4) var(--s-5);border-bottom:1px solid var(--rule)}
+.req:last-child{border-bottom:0}
+.req-main{display:grid;gap:3px;min-width:0}
+.req-kicker{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.req-title{font-size:14.5px;font-weight:650}
+.req-meta{font-size:12.5px;color:var(--ink-3)}
+.req-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.req-state{display:grid;gap:4px;justify-items:end}
+.req-status{font-size:12.5px;font-weight:650;color:var(--v-link);white-space:nowrap}
+.req-status.is-wait{color:var(--v-review)}
+.req-status.is-paused{color:var(--ink-3)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 var(--s-4);border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper-raised);color:var(--ink);font-size:13.5px;font-weight:600;text-decoration:none;cursor:pointer;transition:background var(--dur-in) var(--ease),border-color var(--dur-in) var(--ease),color var(--dur-in) var(--ease)}
+.btn:hover{background:var(--paper-sunken);border-color:var(--ink-3)}
+.btn--primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn--primary:hover{background:#1D2937;border-color:#1D2937;color:var(--paper)}
+.btn--quiet{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn--quiet:hover{background:var(--paper-sunken);color:var(--ink)}
+.btn--sm{min-height:32px;padding:0 10px;font-size:12.5px}
+.btn[disabled]{opacity:.42;cursor:not-allowed}
+.btn[disabled]:hover{background:var(--paper-raised);border-color:var(--rule-strong);color:var(--ink)}
+
+.propose{grid-column:1 / -1;display:flex;gap:var(--s-3);align-items:flex-end;flex-wrap:wrap;margin-top:4px;padding:var(--s-3);border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper)}
+.propose label{display:grid;gap:4px;font-size:12px;font-weight:600;color:var(--ink-2)}
+.propose input{font:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--rule-strong);border-radius:var(--r-2);background:var(--paper-raised);color:var(--ink);min-height:38px}
+.propose input:focus{border-color:var(--ink);outline:none}
+.propose .error{font-size:11.5px;color:var(--veto);font-weight:650;flex-basis:100%}
+
+.availability{margin-top:var(--s-7)}
+.avail{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s-3) var(--s-5);align-items:center;padding:var(--s-4) var(--s-5);border-bottom:1px solid var(--rule)}
+.avail:last-child{border-bottom:0}
+.avail-main{display:grid;gap:2px;min-width:0}
+.avail-title{font-size:14.5px;font-weight:650}
+.avail-meta{font-size:12.5px;color:var(--ink-3)}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-2)}
+.switch input{position:absolute;opacity:0;width:46px;height:28px;margin:0;cursor:pointer}
+.switch-track{width:46px;height:28px;border-radius:14px;border:1px solid var(--rule-strong);background:var(--paper-sunken);position:relative;flex:none;transition:background var(--dur-in) var(--ease),border-color var(--dur-in) var(--ease)}
+.switch-track::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:var(--paper-raised);border:1px solid var(--rule-strong);transition:transform var(--dur-in) var(--ease)}
+.switch input:checked + .switch-track{background:var(--v-link);border-color:var(--v-link)}
+.switch input:checked + .switch-track::after{transform:translateX(18px);border-color:var(--v-link)}
+.switch input:focus-visible + .switch-track{outline:2px solid var(--ink);outline-offset:2px}
+.avail-state{font-size:12px;color:var(--ink-3);justify-self:end;white-space:nowrap}
+
+.verifying{display:grid;gap:6px;padding:var(--s-4) var(--s-5);color:var(--ink-2);font-size:13px}
+.verifying .tag{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--v-review)}
+
+.foot{margin-top:var(--s-7);padding-top:var(--s-4);border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);display:flex;gap:var(--s-4);flex-wrap:wrap;justify-content:space-between}
+
+@media (max-width:860px){
+  .topbar-inner{flex-wrap:wrap;height:auto;padding:10px var(--s-4);gap:10px}
+  .nav{margin-left:0;width:100%}
+  .page{padding:var(--s-6) var(--s-4) var(--s-9)}
+  .page-head{flex-direction:column;gap:var(--s-3)}
+  .folio{text-align:left}
+  .strip{grid-template-columns:1fr}
+  .strip-item{border-right:0;border-bottom:1px solid var(--rule);padding-left:0}
+  .strip-item:last-child{border-bottom:0}
+  .row,.req,.avail{grid-template-columns:1fr}
+  .row-value,.row-flag,.avail-state{justify-self:start;text-align:left}
+  .req-actions{justify-content:flex-start}
+  .req-state{justify-items:start}
+  .propose{flex-direction:column;align-items:stretch}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:1ms !important;animation-duration:1ms !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">BEIQA</span>
+      <span class="brand-sub">Owners · México</span>
+    </div>
+    <nav class="nav" aria-label="Flujo del prototipo">
+      <a class="nav-link" href="01-alta-owner.html"><span class="nav-n">01</span> Alta del owner</a>
+      <a class="nav-link" href="02-posible-duplicado.html"><span class="nav-n">02</span> Posible duplicado</a>
+      <a class="nav-link" href="03-revisor.html"><span class="nav-n">03</span> Revisor</a>
+      <a class="nav-link" href="04-panel-owner.html" aria-current="page"><span class="nav-n">04</span> Panel del owner</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido" class="page">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">Panel del owner</p>
+      <h1 class="page-title">Tu inmueble frente a la demanda que ya existe</h1>
+      <p class="page-lede">BEIQA representa exclusivamente a inquilinos corporativos. Aquí ves el interés real sobre tus inmuebles, decides la disponibilidad y coordinas visitas y propuestas, sin que tus clientes queden expuestos.</p>
+    </div>
+    <p class="folio"><strong>15 mar 2025</strong>2 inmuebles validados<br>1 en verificación</p>
+  </div>
+
+  <p class="privacy">
+    <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><path d="M8 1.8l5 2v4.4c0 2.6-2 5-5 6-3-1-5-3.4-5-6V3.8l5-2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.9 8.1l1.5 1.5 2.8-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span><strong>Mostramos rangos para no exponer la identidad de los clientes.</strong> Cualquier conteo menor a 3 aparece como <span class="num">2–3</span>: alcanza para que planees, no para identificar a quién está buscando.</span>
+  </p>
+
+  <p id="live" class="sr-only" role="status" aria-live="polite"></p>
+
+  <section class="strip" aria-label="Resumen de los últimos 14 días">
+    <div class="strip-item">
+      <span class="strip-k">Visitas solicitadas</span>
+      <span class="strip-v num" id="visits-total">6–7</span>
+      <span class="strip-note">últimos 14 días, en tus 2 inmuebles</span>
+    </div>
+    <div class="strip-item">
+      <span class="strip-k">Apariciones en shortlists</span>
+      <span class="strip-v num" id="shortlists-total">8–9</span>
+      <span class="strip-note">listas de inquilinos corporativos activas</span>
+    </div>
+    <div class="strip-item">
+      <span class="strip-k">Solicitudes pendientes</span>
+      <span class="strip-v num" id="pending-total">2</span>
+      <span class="strip-note">esperan tu respuesta</span>
+    </div>
+  </section>
+
+  <div class="grid-2">
+    <section class="block" aria-labelledby="h-visits">
+      <div class="block-head">
+        <h2 class="block-title" id="h-visits">Visitas solicitadas</h2>
+        <span class="block-note">Solo inquilinos calificados</span>
+      </div>
+      <div class="block-body">
+        <div class="row">
+          <div class="row-main">
+            <span class="row-title">Oficina en Polanco, piso 4</span>
+            <span class="row-sub">Av. Horacio 1850 · esta semana</span>
+            <span class="meter" aria-hidden="true"><i style="width:72%"></i></span>
+          </div>
+          <span class="row-value is-range">2–3</span>
+        </div>
+        <div class="row">
+          <div class="row-main">
+            <span class="row-title">Nave industrial en Toluca, Lote 7</span>
+            <span class="row-sub">Parque Industrial Toluca · esta semana</span>
+            <span class="meter" aria-hidden="true"><i style="width:100%"></i></span>
+          </div>
+          <span class="row-value">3</span>
+        </div>
+        <div class="row">
+          <div class="row-main">
+            <span class="row-title">Local comercial en Condesa</span>
+            <span class="row-sub">En verificación desde el 15 mar</span>
+          </div>
+          <span class="row-flag is-quiet">Sin actividad</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="h-shortlists">
+      <div class="block-head">
+        <h2 class="block-title" id="h-shortlists">Apariciones en shortlists</h2>
+        <span class="block-note">Últimas 2 semanas</span>
+      </div>
+      <div class="block-body">
+        <div class="row">
+          <div class="row-main">
+            <span class="row-title">Oficina en Polanco, piso 4</span>
+            <span class="row-sub">Sector servicios · 2 inquilinos distintos</span>
+            <span class="meter" aria-hidden="true"><i style="width:100%"></i></span>
+          </div>
+          <span class="row-value">6</span>
+        </div>
+        <div class="row">
+          <div class="row-main">
+            <span class="row-title">Nave industrial en Toluca, Lote 7</span>
+            <span class="row-sub">Sector logística · 1 inquilino</span>
+            <span class="meter" aria-hidden="true"><i style="width:34%"></i></span>
+          </div>
+          <span class="row-value is-range">2–3</span>
+        </div>
+        <div class="row">
+          <div class="row-main">
+            <span class="row-title">Local comercial en Condesa</span>
+            <span class="row-sub">Publicado al validarse</span>
+          </div>
+          <span class="row-flag is-quiet">Sin actividad</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="block requests" aria-labelledby="h-req">
+    <div class="block-head">
+      <h2 class="block-title" id="h-req">Solicitudes pendientes</h2>
+      <span class="block-note">Responder en menos de 48 h mejora la posición en el shortlist</span>
+    </div>
+    <div class="block-body" id="requests">
+      <article class="req" data-req="r-1" data-property="p-polanco">
+        <div class="req-main">
+          <span class="req-kicker">Visita guiada</span>
+          <h3 class="req-title">Oficina en Polanco, piso 4</h3>
+          <p class="req-meta">Cliente corporativo del sector servicios · solicitada hace 2 días · sin nombre de empresa ni contacto</p>
+        </div>
+        <div class="req-actions" data-actions>
+          <button type="button" class="btn btn--primary btn--sm" data-accept="r-1">Aceptar visita</button>
+          <button type="button" class="btn btn--sm" data-propose="r-1">Proponer otra fecha</button>
+        </div>
+        <p class="req-state" data-state hidden></p>
+      </article>
+
+      <article class="req" data-req="r-2" data-property="p-toluca">
+        <div class="req-main">
+          <span class="req-kicker">Propuesta de renta</span>
+          <h3 class="req-title">Nave industrial en Toluca, Lote 7</h3>
+          <p class="req-meta">Cliente corporativo del sector logística · solicitada hace 4 días · sin nombre de empresa ni contacto</p>
+        </div>
+        <div class="req-actions" data-actions>
+          <button type="button" class="btn btn--primary btn--sm" data-accept="r-2">Aceptar propuesta</button>
+          <button type="button" class="btn btn--sm" data-propose="r-2">Proponer ajuste</button>
+        </div>
+        <p class="req-state" data-state hidden></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="block availability" aria-labelledby="h-avail">
+    <div class="block-head">
+      <h2 class="block-title" id="h-avail">Disponibilidad por inmueble</h2>
+      <span class="block-note" id="avail-summary">2 de 3 inmuebles activos</span>
+    </div>
+    <div class="block-body">
+      <div class="avail" data-property="p-polanco">
+        <div class="avail-main">
+          <span class="avail-title">Oficina en Polanco, piso 4</span>
+          <span class="avail-meta">420 m² · $520 / m² · validada</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-availability="p-polanco" checked aria-describedby="avail-state-p-polanco">
+          <span class="switch-track" aria-hidden="true"></span>
+          <span class="avail-state" id="avail-state-p-polanco">Disponible</span>
+        </label>
+      </div>
+
+      <div class="avail" data-property="p-toluca">
+        <div class="avail-main">
+          <span class="avail-title">Nave industrial en Toluca, Lote 7</span>
+          <span class="avail-meta">2,500 m² · $145 / m² · validada</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-availability="p-toluca" checked aria-describedby="avail-state-p-toluca">
+          <span class="switch-track" aria-hidden="true"></span>
+          <span class="avail-state" id="avail-state-p-toluca">Disponible</span>
+        </label>
+      </div>
+
+      <div class="avail" data-property="p-condesa">
+        <div class="avail-main">
+          <span class="avail-title">Local comercial en Condesa</span>
+          <span class="avail-meta">Av. Ámsterdam 240 · alta guiada del 15 mar</span>
+        </div>
+        <span class="row-flag">En verificación</span>
+      </div>
+
+      <div class="verifying">
+        <span class="tag">Mientras se verifica</span>
+        <p>El local de Condesa no aparece en shortlists ni recibe solicitudes hasta que un asesor confirma la titularidad. No hay nada que hacer de tu lado.</p>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">
+    <span>BEIQA · Consultoría de inquilinos corporativos</span>
+    <span>Prototipo de trabajo · datos de ejemplo</span>
+  </p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var live = document.getElementById("live");
+  var availability = {};
+  var undo = {};
+
+  function say(message) {
+    live.textContent = "";
+    window.setTimeout(function () { live.textContent = message; }, 30);
+  }
+
+  function propertyState(id) {
+    var input = document.querySelector('[data-availability="' + id + '"]');
+    return input ? input.checked : false;
+  }
+
+  /* ---------- disponibilidad ---------- */
+  function refreshAvailability() {
+    var ids = ["p-polanco", "p-toluca", "p-condesa"];
+    var active = ids.filter(function (id) {
+      var input = document.querySelector('[data-availability="' + id + '"]');
+      return input && input.checked;
+    }).length;
+    document.getElementById("avail-summary").textContent = active + " de 3 inmuebles activos";
+    document.querySelectorAll("[data-availability]").forEach(function (input) {
+      var id = input.getAttribute("data-availability");
+      var label = document.getElementById("avail-state-" + id);
+      if (label) { label.textContent = input.checked ? "Disponible" : "No disponible"; }
+    });
+    document.querySelectorAll(".req").forEach(function (row) {
+      var property = row.getAttribute("data-property");
+      var isActive = propertyState(property);
+      var pending = row.querySelector("[data-actions]");
+      var stateNode = row.querySelector("[data-state]");
+      if (!isActive && !row.dataset.decided) {
+        if (stateNode) {
+          stateNode.hidden = false;
+          stateNode.className = "req-state";
+          stateNode.textContent = "Pausado: el inmueble no está disponible para visitas.";
+        }
+        if (pending) {
+          Array.prototype.forEach.call(pending.querySelectorAll("button"), function (button) {
+            button.disabled = true;
+          });
+        }
+      } else if (!row.dataset.decided) {
+        if (stateNode) { stateNode.hidden = true; stateNode.textContent = ""; }
+        if (pending) {
+          Array.prototype.forEach.call(pending.querySelectorAll("button"), function (button) {
+            button.disabled = false;
+          });
+        }
+      }
+    });
+  }
+
+  document.addEventListener("change", function (event) {
+    var input = event.target.closest("[data-availability]");
+    if (!input) { return; }
+    refreshAvailability();
+    say(input.checked
+      ? "Inmueble disponible. Vuelve a aparecer en shortlists y visitas."
+      : "Inmueble marcado como no disponible. Las solicitudes pendientes quedan en pausa.");
+  });
+
+  /* ---------- solicitudes ---------- */
+  function renderDecision(row, kind, text, extra) {
+    row.dataset.decided = kind;
+    var actions = row.querySelector("[data-actions]");
+    var stateNode = row.querySelector("[data-state]");
+    if (actions) { actions.hidden = true; }
+    if (!stateNode) { return; }
+    stateNode.hidden = false;
+    stateNode.className = "req-state";
+    stateNode.textContent = "";
+    var status = document.createElement("span");
+    status.className = "req-status" + (kind === "proposed" ? " is-wait" : "");
+    status.textContent = text;
+    stateNode.appendChild(status);
+    if (extra) {
+      var meta = document.createElement("span");
+      meta.className = "req-meta";
+      meta.textContent = extra;
+      stateNode.appendChild(meta);
+    }
+    var undoButton = document.createElement("button");
+    undoButton.type = "button";
+    undoButton.className = "btn btn--quiet btn--sm";
+    undoButton.textContent = "Deshacer";
+    undoButton.setAttribute("data-undo", row.getAttribute("data-req"));
+    stateNode.appendChild(undoButton);
+  }
+
+  function resetRow(row) {
+    delete row.dataset.decided;
+    var actions = row.querySelector("[data-actions]");
+    var stateNode = row.querySelector("[data-state]");
+    if (actions) { actions.hidden = false; }
+    if (stateNode) { stateNode.hidden = true; stateNode.textContent = ""; }
+    refreshAvailability();
+  }
+
+  function pendingCount() {
+    var total = 0;
+    document.querySelectorAll(".req").forEach(function (row) {
+      if (!row.dataset.decided) { total += 1; }
+    });
+    return total;
+  }
+
+  function refreshPending() {
+    document.getElementById("pending-total").textContent = String(pendingCount());
+  }
+
+  document.getElementById("requests").addEventListener("click", function (event) {
+    var accept = event.target.closest("[data-accept]");
+    var propose = event.target.closest("[data-propose]");
+    var undoButton = event.target.closest("[data-undo]");
+
+    if (accept) {
+      var row = accept.closest(".req");
+      renderDecision(row, "accepted", "Visita confirmada", "Viernes 21 de marzo, 10:00 · el cliente recibe la confirmación");
+      refreshPending();
+      say("Visita confirmada. Puedes deshacerlo.");
+      return;
+    }
+
+    if (propose) {
+      var prune = propose.closest(".req");
+      if (prune.querySelector("[data-propose-form]")) { return; }
+      var form = document.createElement("div");
+      form.className = "propose";
+      form.setAttribute("data-propose-form", "");
+      var label = document.createElement("label");
+      label.htmlFor = "propose-date-" + prune.getAttribute("data-req");
+      label.textContent = "Fecha propuesta";
+      var input = document.createElement("input");
+      input.type = "date";
+      input.id = "propose-date-" + prune.getAttribute("data-req");
+      var send = document.createElement("button");
+      send.type = "button";
+      send.className = "btn btn--primary btn--sm";
+      send.textContent = "Enviar propuesta";
+      send.setAttribute("data-propose-send", prune.getAttribute("data-req"));
+      var cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "btn btn--quiet btn--sm";
+      cancel.textContent = "Cancelar";
+      cancel.setAttribute("data-propose-cancel", prune.getAttribute("data-req"));
+      var error = document.createElement("p");
+      error.className = "error";
+      error.hidden = true;
+      error.textContent = "Elige una fecha antes de enviar la propuesta.";
+      label.appendChild(input);
+      form.appendChild(label);
+      form.appendChild(send);
+      form.appendChild(cancel);
+      form.appendChild(error);
+      prune.insertBefore(form, prune.querySelector("[data-state]"));
+      input.focus();
+      say("Elige la fecha que quieres proponer.");
+      return;
+    }
+
+    if (event.target.closest("[data-propose-cancel]")) {
+      var cancelForm = event.target.closest("[data-propose-form]");
+      if (cancelForm) { cancelForm.remove(); }
+      say("Propuesta cancelada.");
+      return;
+    }
+
+    if (event.target.closest("[data-propose-send]")) {
+      var sendButton = event.target.closest("[data-propose-send]");
+      var targetRow = sendButton.closest(".req");
+      var dateInput = targetRow.querySelector(".propose input");
+      var err = targetRow.querySelector(".propose .error");
+      if (!dateInput || !dateInput.value) {
+        if (err) { err.hidden = false; }
+        if (dateInput) { dateInput.focus(); }
+        say("Falta la fecha de la propuesta.");
+        return;
+      }
+      var readable = new Date(dateInput.value + "T12:00:00").toLocaleDateString("es-MX", { day: "numeric", month: "long" });
+      var formNode = targetRow.querySelector("[data-propose-form]");
+      if (formNode) { formNode.remove(); }
+      renderDecision(targetRow, "proposed", "Propuesta enviada", readable + " · esperando respuesta del cliente");
+      refreshPending();
+      say("Propuesta enviada. Puedes deshacerlo.");
+      return;
+    }
+
+    if (undoButton) {
+      var undoRow = undoButton.closest(".req");
+      resetRow(undoRow);
+      refreshPending();
+      say("Solicitud deshecha. Vuelve a estar pendiente.");
+    }
+  });
+
+  refreshAvailability();
+  refreshPending();
+})();
+</script>
+</body>
+</html>
