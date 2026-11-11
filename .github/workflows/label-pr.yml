@@ -1,0 +1,60 @@
+name: Etiquetas del PR
+
+# El prefijo de rama es una convención, no una prueba: cualquiera puede
+# no usarlo. Sirve para medir, no para impedir. Cuando el agente corra con su
+# propia cuenta de GitHub, el dato duro pasa a ser
+# github.event.pull_request.user.login.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: etiquetas-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  etiquetas:
+    name: Origen y tamaño
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Calcular y aplicar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMERO: ${{ github.event.pull_request.number }}
+          RAMA: ${{ github.event.pull_request.head.ref }}
+          ADICIONES: ${{ github.event.pull_request.additions }}
+          ELIMINADAS: ${{ github.event.pull_request.deletions }}
+        run: |
+          set -euo pipefail
+
+          lineas=$(( ADICIONES + ELIMINADAS ))
+          if   (( lineas <= 20  )); then tamano=size/xs
+          elif (( lineas <= 100 )); then tamano=size/s
+          elif (( lineas <= 400 )); then tamano=size/m
+          else                           tamano=size/l
+          fi
+
+          # Se recalculan en cada push: sin quitar las previas, un PR que baja
+          # de tamaño queda con dos etiquetas y la de 4.000 líneas sigue
+          # mintiendo.
+          previas=$(gh pr view "$NUMERO" --json labels \
+            --jq '[.labels[].name
+                  | select(startswith("size/") or . == "agent-pr")] | .[]')
+          for etiqueta in $previas; do
+            gh pr edit "$NUMERO" --remove-label "$etiqueta" >/dev/null
+          done
+
+          gh pr edit "$NUMERO" --add-label "$tamano"
+          echo "Tamaño: $tamano ($lineas líneas cambiadas)"
+
+          if [[ "$RAMA" == agent/* ]]; then
+            gh pr edit "$NUMERO" --add-label agent-pr
+            echo "Origen: agente, rama $RAMA"
+          fi
