@@ -197,7 +197,7 @@ button{font:inherit;color:inherit}
 
   <p class="privacy">
     <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><path d="M8 1.8l5 2v4.4c0 2.6-2 5-5 6-3-1-5-3.4-5-6V3.8l5-2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.9 8.1l1.5 1.5 2.8-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span><strong>Mostramos rangos para no exponer la identidad de los clientes.</strong> Cualquier conteo menor a 3 aparece como <span class="num">2–3</span>: alcanza para que planees, no para identificar a quién está buscando.</span>
+    <span><strong>Mostramos rangos para no exponer la identidad de los clientes.</strong> Los conteos menores a 3 aparecen como rangos: alcanza para que planees, no para identificar a quién está buscando.</span>
   </p>
 
   <p id="live" class="sr-only" role="status" aria-live="polite"></p>
@@ -205,7 +205,7 @@ button{font:inherit;color:inherit}
   <section class="strip" aria-label="Resumen de los últimos 14 días">
     <div class="strip-item">
       <span class="strip-k">Visitas solicitadas</span>
-      <span class="strip-v num" id="visits-total">6–7</span>
+      <span class="strip-v num" id="visits-total"></span>
       <span class="strip-note">últimos 14 días, en tus 2 inmuebles</span>
     </div>
     <div class="strip-item">
@@ -215,7 +215,7 @@ button{font:inherit;color:inherit}
     </div>
     <div class="strip-item">
       <span class="strip-k">Solicitudes pendientes</span>
-      <span class="strip-v num" id="pending-total">2</span>
+      <span class="strip-v num" id="pending-total"></span>
       <span class="strip-note">esperan tu respuesta</span>
     </div>
   </section>
@@ -233,7 +233,7 @@ button{font:inherit;color:inherit}
             <span class="row-sub">Av. Horacio 1850 · esta semana</span>
             <span class="meter" aria-hidden="true"><i style="width:72%"></i></span>
           </div>
-          <span class="row-value is-range">2–3</span>
+          <span class="row-value is-range" data-visits-min="2" data-visits-max="3">2–3</span>
         </div>
         <div class="row">
           <div class="row-main">
@@ -241,7 +241,7 @@ button{font:inherit;color:inherit}
             <span class="row-sub">Parque Industrial Toluca · esta semana</span>
             <span class="meter" aria-hidden="true"><i style="width:100%"></i></span>
           </div>
-          <span class="row-value">3</span>
+          <span class="row-value" data-visits-min="3" data-visits-max="3">3</span>
         </div>
         <div class="row">
           <div class="row-main">
@@ -262,7 +262,7 @@ button{font:inherit;color:inherit}
         <div class="row">
           <div class="row-main">
             <span class="row-title">Oficina en Polanco, piso 4</span>
-            <span class="row-sub">Sector servicios · 2 inquilinos distintos</span>
+            <span class="row-sub">Sector servicios · 2–3 inquilinos distintos</span>
             <span class="meter" aria-hidden="true"><i style="width:100%"></i></span>
           </div>
           <span class="row-value">6</span>
@@ -270,7 +270,7 @@ button{font:inherit;color:inherit}
         <div class="row">
           <div class="row-main">
             <span class="row-title">Nave industrial en Toluca, Lote 7</span>
-            <span class="row-sub">Sector logística · 1 inquilino</span>
+            <span class="row-sub">Sector logística · 2–3 inquilinos</span>
             <span class="meter" aria-hidden="true"><i style="width:34%"></i></span>
           </div>
           <span class="row-value is-range">2–3</span>
@@ -331,8 +331,8 @@ button{font:inherit;color:inherit}
           <span class="avail-title">Oficina en Polanco, piso 4</span>
           <span class="avail-meta">420 m² · $520 / m² · validada</span>
         </div>
-        <label class="switch">
-          <input type="checkbox" data-availability="p-polanco" checked aria-describedby="avail-state-p-polanco">
+        <label class="switch" for="availability-polanco">
+          <input id="availability-polanco" type="checkbox" aria-label="Disponibilidad de Oficina en Polanco, piso 4" data-availability="p-polanco" checked aria-describedby="avail-state-p-polanco">
           <span class="switch-track" aria-hidden="true"></span>
           <span class="avail-state" id="avail-state-p-polanco">Disponible</span>
         </label>
@@ -343,8 +343,8 @@ button{font:inherit;color:inherit}
           <span class="avail-title">Nave industrial en Toluca, Lote 7</span>
           <span class="avail-meta">2,500 m² · $145 / m² · validada</span>
         </div>
-        <label class="switch">
-          <input type="checkbox" data-availability="p-toluca" checked aria-describedby="avail-state-p-toluca">
+        <label class="switch" for="availability-toluca">
+          <input id="availability-toluca" type="checkbox" aria-label="Disponibilidad de Nave industrial en Toluca" data-availability="p-toluca" checked aria-describedby="avail-state-p-toluca">
           <span class="switch-track" aria-hidden="true"></span>
           <span class="avail-state" id="avail-state-p-toluca">Disponible</span>
         </label>
@@ -353,7 +353,7 @@ button{font:inherit;color:inherit}
       <div class="avail" data-property="p-condesa">
         <div class="avail-main">
           <span class="avail-title">Local comercial en Santa Fe</span>
-          <span class="avail-meta">Av. Ámsterdam 240 · alta guiada del 15 mar</span>
+          <span class="avail-meta">Av. Santa Fe 495 · alta guiada del 15 mar</span>
         </div>
         <span class="row-flag">En verificación</span>
       </div>
@@ -371,13 +371,24 @@ button{font:inherit;color:inherit}
   </p>
 </main>
 
+<script src="js/store.js"></script>
 <script>
 (function () {
   "use strict";
 
   var live = document.getElementById("live");
-  var availability = {};
-  var undo = {};
+  var store = BeiqaStore.createStore(sessionStorage);
+  var availability = store.read().availability || {};
+  document.querySelectorAll('[data-availability]').forEach(function (input) {
+    var id = input.getAttribute('data-availability');
+    if (Object.prototype.hasOwnProperty.call(availability, id)) input.checked = availability[id];
+  });
+  var visitMin = 0, visitMax = 0;
+  document.querySelectorAll('[data-visits-min]').forEach(function (node) {
+    visitMin += Number(node.dataset.visitsMin);
+    visitMax += Number(node.dataset.visitsMax);
+  });
+  document.getElementById('visits-total').textContent = visitMin < 3 ? '2–3' : (visitMin === visitMax ? String(visitMin) : visitMin + '–' + visitMax);
 
   function say(message) {
     live.textContent = "";
@@ -396,7 +407,7 @@ button{font:inherit;color:inherit}
       var input = document.querySelector('[data-availability="' + id + '"]');
       return input && input.checked;
     }).length;
-    document.getElementById("avail-summary").textContent = active + " de 3 inmuebles activos";
+    document.getElementById("avail-summary").textContent = active + " de " + ids.length + " inmuebles activos";
     document.querySelectorAll("[data-availability]").forEach(function (input) {
       var id = input.getAttribute("data-availability");
       var label = document.getElementById("avail-state-" + id);
@@ -432,6 +443,10 @@ button{font:inherit;color:inherit}
   document.addEventListener("change", function (event) {
     var input = event.target.closest("[data-availability]");
     if (!input) { return; }
+    availability = Object.assign({}, store.read().availability || {});
+    availability[input.getAttribute('data-availability')] = input.checked;
+    var title = input.closest('.avail').querySelector('.avail-title').textContent;
+    store.change({ availability: availability }, { what: title + (input.checked ? ': disponible' : ': no disponible') });
     refreshAvailability();
     say(input.checked
       ? "Inmueble disponible. Vuelve a aparecer en shortlists y visitas."
@@ -484,7 +499,10 @@ button{font:inherit;color:inherit}
   }
 
   function refreshPending() {
-    document.getElementById("pending-total").textContent = String(pendingCount());
+    var count = pendingCount();
+    // Las solicitudes son del owner, no del cliente: el conteo es exacto.
+    // El piso de anonimato aplica al interés de clientes, no a su propio expediente.
+    document.getElementById("pending-total").textContent = String(count);
   }
 
   document.getElementById("requests").addEventListener("click", function (event) {
