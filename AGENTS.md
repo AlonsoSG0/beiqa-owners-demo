@@ -64,6 +64,25 @@ Español de México, sin voseo, sin jerga innecesaria. Textos de interfaz que ex
 
 Conventional Commits (`feat`, `fix`, `refactor`, `test`, `docs`, `chore`). Un commit por unidad revisable: código, pruebas y documentación de la misma conducta van juntos. El cuerpo del commit explica el *por qué* y la evidencia, no repite el diff.
 
+## Atribución: de dónde viene un cambio
+
+El repo necesita distinguir un PR de una persona de uno de un agente para poder medir su salud. La convención es doble y **las dos señales se declaran, no se verifican**:
+
+1. **Rama** `agent/<alcance>` cuando el trabajo lo inicia un agente.
+2. **Trailer** en el cuerpo del commit, en su propia línea: `Agent: <nombre>`.
+
+```bash
+git commit -m "feat(alta): pedir el piso" -m "Agent: pi (el Gentleman)"
+```
+
+El workflow `label-pr.yml` pone `agent-pr` si aparece cualquiera de las dos, y deja en el log cuál coincidió: `rama`, `trailer` o `ambas`.
+
+**Por qué un trailer propio y no `Co-Authored-By`:** ese campo es para acreditar coautoría y las herramientas lo usan de forma inconsistente. Un trailer `Agent:` es inequívoco y se puede buscar con un `grep`.
+
+**Qué no resuelve.** Las dos señales son auto-declaradas: un agente que no las ponga es invisible, y un humano puede escribirlas. La única señal que GitHub no puede confundir con una persona es una **identidad separada** —cuenta de máquina o GitHub App— con su propio token y sus propios permisos. Este repo no la usa, y es una decisión consciente: agregar una identidad que rotar no tiene retorno en un prototipo de demostración. El día que la métrica importe de verdad, ese es el paso que sigue.
+
+**Consecuencia práctica:** si una persona commitea trabajo hecho por un agente, deja el trailer. Borrarlo no limpia el commit: rompe la medición.
+
 ## Definición de terminado
 
 - La conducta pedida existe y se puede mostrar en pantalla o en una prueba.

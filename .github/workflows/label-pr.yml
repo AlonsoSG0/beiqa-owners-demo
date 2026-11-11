@@ -1,9 +1,10 @@
 name: Etiquetas del PR
 
-# El prefijo de rama es una convención, no una prueba: cualquiera puede
-# no usarlo. Sirve para medir, no para impedir. Cuando el agente corra con su
-# propia cuenta de GitHub, el dato duro pasa a ser
-# github.event.pull_request.user.login.
+# El origen se detecta por dos señales que se suman: el prefijo de la rama y un
+# trailer en los commits. Las dos son declaradas, no verificadas: un agente que
+# no las ponga es invisible. Lo único que GitHub no puede confundir con una
+# persona es una identidad separada (cuenta de máquina o GitHub App), que este
+# repo todavía no usa. Mientras tanto, medimos conociendo el margen de error.
 
 on:
   pull_request:
@@ -54,7 +55,24 @@ jobs:
           gh pr edit "$NUMERO" --add-label "$tamano"
           echo "Tamaño: $tamano ($lineas líneas cambiadas)"
 
-          if [[ "$RAMA" == agent/* ]]; then
+          # Señal 1: la rama. Barata, visible, y se pierde si alguien la
+          # renombra.
+          origen=""
+          if [[ "$RAMA" == agent/* ]]; then origen="rama"; fi
+
+          # Señal 2: el trailer `Agent: <nombre>` en cualquier commit del PR.
+          # Viaja con el commit, sobrevive renombres de rama y en un PR mixto
+          # distingue cuáles commits fueron de un agente.
+          mensajes=$(gh api "repos/$GH_REPO/pulls/$NUMERO/commits" \
+            --paginate --jq '.[].commit.message' 2>/dev/null || true)
+          if grep -qE '^Agent: .+' <<<"$mensajes"; then
+            origen="${origen:+ambas}"
+            origen="${origen:-trailer}"
+          fi
+
+          if [[ -n "$origen" ]]; then
             gh pr edit "$NUMERO" --add-label agent-pr
-            echo "Origen: agente, rama $RAMA"
+            echo "Origen declarado por: $origen"
+          else
+            echo "Origen no declarado: sin prefijo agent/ ni trailer Agent:"
           fi
