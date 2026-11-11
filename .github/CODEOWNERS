@@ -1,0 +1,23 @@
+# Responsables por ruta.
+#
+# Esto enruta revisiones: al abrir un PR, GitHub agrega como revisor a quien figure acá.
+# NO bloquea el merge por sí solo. Para que bloquee hay que activar "Require review from
+# Code Owners" en la regla de la rama main (Settings → Rules), y eso está desactivado a
+# propósito: con una sola persona con permiso de escritura, el requisito impide mergear
+# cualquier PR, porque GitHub no permite aprobar el propio.
+#
+# Cuando haya un segundo revisor: activar el requisito y repartir estas rutas.
+#
+# La última regla que coincide manda.
+
+*                           @AlonsoSG0
+
+# El motor de coincidencia es el corazón del producto: un cambio acá mueve los
+# umbrales de todo el sistema. Los vetos y la cobertura no se tocan sin mirar
+# el corpus.
+/js/matching.js             @AlonsoSG0
+/js/revisor-cases.js        @AlonsoSG0
+/tests/                     @AlonsoSG0
+
+# La configuración de CI y las plantillas afectan a todos los cambios.
+/.github/                   @AlonsoSG0
